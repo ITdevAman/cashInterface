@@ -133,6 +133,15 @@ const cashBlock = css`
     height: 130vh;
     position: relative;
     width: 100%;
+    & input {
+      width: 30%;
+      background: white;
+      padding: 10px 15px;
+      border: 0.5px solid ;
+      outline: none;
+      border-radius: 3px;
+      margin-bottom: 10px;
+    }
     & h1 {
       font-size: 22px;
       font-weight: 650;
@@ -330,6 +339,16 @@ const Home = () => {
     }, [TokenRefresh])
     const searchCard = (el) => {
         let value = el.target.value.toLowerCase()
+        axios.get(`https://s225912.hostiman.com/api/product/search/?search=${value}` , {headers: {
+                "Authorization" : `Bearer ${tokenRefresh}`
+            }})
+            .then((res) => {
+                setSearch(res.data)
+            })
+        return setSearch(card)
+    }
+    const BarCode = (el) => {
+        let value = el.target.value.toLowerCase()
         if (value.length === 13 ){
             axios.get(`https://s225912.hostiman.com/api/product/search/?search=${value}` , {headers: {
                     "Authorization" : `Bearer ${tokenRefresh}`
@@ -355,7 +374,7 @@ const Home = () => {
         <section id={"Home"}>
             <div className={cashBlock}>
                 <div className="cashBlockSeach">
-                    <h1>Выберите категорию</h1>
+                    <h1>Аптека</h1>
                     <input type="search" onChange={el => searchCard(el)} placeholder="Поиск продукта"/>
                 </div>
                 <div className={category.length > 5 ? "cashFilter2" : "cashFilter"}>
@@ -378,7 +397,7 @@ const Home = () => {
 
                 </div>
                 <div className="cashMenu">
-                    <h1>Аптека</h1>
+                    <input type="search" onChange={el => BarCode(el)} placeholder="Код"/>
                     <div className="cashMenuBlock">
                         <div>
                             {
