@@ -86,11 +86,11 @@ const cashMenu = css`
   }
   .logOut{
     position: relative;
-    width: 100%;
     display: flex;
     justify-items: center;
     flex-direction: column;
     margin-left: 10px;
+    width: 100%;
     & button{
       border:none;
       position: relative;
@@ -98,7 +98,6 @@ const cashMenu = css`
       flex-direction: column;
       align-items: center;
       background: transparent;
-      width: 90%;
       text-decoration: none;
       margin: 10px 0;
       transition: .4s;

@@ -348,18 +348,20 @@ const Home = () => {
     }
     const BarCode = (el) => {
         let value = el.target.value.toLowerCase()
-        if (value.length === 13 ){
-            axios.get(`https://s225912.hostiman.com/api/product/search/?search=${value}` , {headers: {
-                    "Authorization" : `Bearer ${tokenRefresh}`
-                }})
-                .then((res) => {
-                    dispatch({ type : ADD_CART , payload : res.data[0]})
-                    el.target.value = ""
-                })
+        if (is_active){
+            if (value.length === 13 ){
+                axios.get(`https://s225912.hostiman.com/api/product/search/?search=${value}` , {headers: {
+                        "Authorization" : `Bearer ${tokenRefresh}`
+                    }})
+                    .then((res) => {
+                        dispatch({ type : ADD_CART , payload : res.data[0]})
+                        el.target.value = ""
+                    })
+            }
         }
         return setSearch(card)
     }
-
+//400003182391  400072312312
 
     const filter = ({name}) => {
         let valueFilter = name.toLowerCase()
@@ -402,6 +404,7 @@ const Home = () => {
                             {
                                 !is_active  ? <h4 className={isntActive}>Вы еще не начали работу !</h4> : <div className={"row"}>{
                                     search.map((item) => {
+                                        console.log(item)
                                         return(
                                             <div className="col-lg-6" id={item.id}>
                                                 <div className="cashMenu_block">
