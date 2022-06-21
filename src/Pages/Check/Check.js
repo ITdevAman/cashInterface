@@ -1,6 +1,6 @@
 
 
-import React, {useEffect, useRef} from 'react';
+import React, {useRef} from 'react';
 import { useReactToPrint } from 'react-to-print';
 
 import ComponentToPrint  from './ComponentToPrint';

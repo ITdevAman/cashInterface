@@ -251,7 +251,7 @@ const Home = () => {
     const [category, setCategory] = useState([])
     const dispatch = useDispatch()
     const {token , is_active ,tokenRefresh} = useSelector(store => store)
-    const Token = `${tokenRefresh.access}`
+    const Token = tokenRefresh.access
     const TokenRefresh = `${token.token.refresh}`
 
     useEffect(() => {

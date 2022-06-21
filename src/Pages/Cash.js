@@ -456,9 +456,6 @@ const Cash = () => {
         setClient(e.target.value)
     }
     const totalPrice = cart.reduce((acc, el) => el.count * el.price + acc, 0)
-    const Cash = () => {
-
-    }
     useEffect(() => {
         const cashSum = client - totalPrice
         return setCashValue(cashSum)
