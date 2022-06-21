@@ -27,8 +27,7 @@ const cashBlock = css`
     & input {
       width: 50%;
       position: absolute;
-      opacity: 0;
-      z-index: -1;
+      
       background: white;
       padding: 10px 15px;
       border: none;
@@ -251,7 +250,7 @@ const Home = () => {
     const [category, setCategory] = useState([])
     const dispatch = useDispatch()
     const {token , is_active ,tokenRefresh} = useSelector(store => store)
-    const Token = tokenRefresh.access
+    const Token = tokenRefresh
     const TokenRefresh = `${token.token.refresh}`
 
     useEffect(() => {
@@ -282,7 +281,7 @@ const Home = () => {
                 }
             })
             .then((res) => {
-                localStorage.setItem('tokenRefresh', JSON.stringify(res.data))
+                localStorage.setItem('tokenRefresh', JSON.stringify(res.data.access))
             })
             .catch(err => console.log(err))
     }, [TokenRefresh])
@@ -309,6 +308,7 @@ const Home = () => {
         })
         setSearch(result)
     }
+    // 47000021313 47000012312
         return (
         <section id={"Home"}>
             <div className={cashBlock}>

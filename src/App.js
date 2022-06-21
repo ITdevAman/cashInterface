@@ -8,7 +8,7 @@ import {useSelector} from "react-redux";
 function App() {
 
     const isAuth = useSelector(store => store.isAuth)
-    const tokenRefresh = useSelector(store => store.token.token.access)
+    const tokenRefresh = useSelector(store => store.token)
     return (
         <div>
             {!tokenRefresh &&

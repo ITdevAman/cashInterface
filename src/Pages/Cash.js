@@ -461,7 +461,7 @@ const Cash = () => {
         return setCashValue(cashSum)
     })
     //post , get // start
-    const Token = tokenRefresh.access
+    const Token = tokenRefresh
 
     useEffect(() => {
         axios("https://s225912.hostiman.com/api/cash-session/info/", {
