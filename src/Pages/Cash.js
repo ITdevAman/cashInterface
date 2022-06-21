@@ -12,7 +12,6 @@ import {
 } from "../Redux/actions";
 import Modal from 'react-modal';
 import axios from "axios";
-import Example from "./Check/Check";
 
 
 
@@ -421,7 +420,23 @@ const Alert = css`
     }
   }
 `
-
+const payment = css`
+  padding-top: 30px;
+  .payment_button {
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 17px;
+    padding: 15px 0;
+    border: none;
+    font-weight: 900;
+    border-radius: 15px;
+    color: white;
+    background: #77402F;
+  }
+`
 
 const Cash = () => {
     const dispatch = useDispatch()
@@ -435,7 +450,9 @@ const Cash = () => {
     function openModal() {
         setIsOpen(true);
     }
-
+    const CashBtn = () => {
+        return document.location.reload()
+    }
     function afterOpenModal() {
         subtitle.style.color = '#f00';
     }
@@ -666,7 +683,7 @@ const Cash = () => {
                                                     payload: {id: item.id, count: s.target.value}
                                                 })} type="number"/>
                                                 <button className={"cartBtn"}
-                                                        onClick={() => dispatch({type: ADD_CART, item})}>+
+                                                        onClick={() => dispatch({type: ADD_CART, payload : item})}>+
                                                 </button>
                                                 <button className={"cartBtnDel"}
                                                         onClick={() => dispatch({type: REMOVE_CART, item})}>Удалить
@@ -705,7 +722,11 @@ const Cash = () => {
                             }
                         </div>
                     </div>
-                    <Example/>
+                    <div className={payment}>
+                        <button onClick={CashBtn} className="payment_button">
+                            Завершить
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
