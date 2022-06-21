@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import beer from "../Assets/images/filter-img/img_2.png";
 import coffee from "../Assets/images/filter-img/img_1.png";
 import {css} from "@emotion/css";
 import axios from "axios"
@@ -379,7 +378,7 @@ const Home = () => {
                 </div>
                 <div className={category.length > 5 ? "cashFilter2" : "cashFilter"}>
                     <button onClick={()=>filter({name: ""})} className="cashFilter_cart">
-                        <img src={beer} alt=""/>
+                        <img src={coffee} alt=""/>
                         <h1>
                             All
                         </h1>
@@ -387,7 +386,7 @@ const Home = () => {
                     {
                         category.map((item)=>{
                             return <button id={item.id} onClick={()=>filter({name: item.name})} className="cashFilter_cart">
-                                <img src={coffee} alt=""/>
+                                <img src={item.image} alt=""/>
                                 <h1>
                                     {item.name}
                                 </h1>

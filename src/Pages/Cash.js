@@ -206,7 +206,6 @@ const person_svg = css`
   width: 30px;
   height: 30px;
   position: relative;
-
   & img {
     width: 100%;
     height: 100%;
@@ -227,7 +226,7 @@ const Discount = css`
 `
 const cashTotal = css`
   .cash_total {
-    width: 100%;
+    width: 120%;
     position: relative;
     display: flex;
     justify-content: space-between;
@@ -242,7 +241,8 @@ const cashTotal = css`
   }
 
   .cash_total2 {
-    width: 100%;
+    width: 120%;
+    padding-right: 7%;
     position: relative;
     display: flex;
     justify-content: space-between;
@@ -257,7 +257,7 @@ const cashTotal = css`
   }
 
   .cash_tax {
-    width: 100%;
+    width: 120%;
     position: relative;
     display: flex;
     justify-content: space-between;
@@ -337,7 +337,7 @@ const Stop = css`
   font-size: 22px;
 `
 const totalClientBlock = css`
-  width: 100%;
+  width: 113%;
   height: auto;
   padding: 10px;
   border: 0.5px solid black;
@@ -426,7 +426,7 @@ const payment = css`
   padding-top: 30px;
   .payment_button {
     margin-top: 20px;
-    width: 100%;
+    width: 113%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -701,8 +701,7 @@ const Cash = () => {
                         <div className="cash_total2">
                             <p>Общая стоимость</p>
                             <p>
-                                <span className={spanX}>C</span>
-                                {totalPrice.toFixed(2)}
+                                {totalPrice.toFixed(2)} coм
                             </p>
                         </div>
                         <div className={totalClientBlock}>
