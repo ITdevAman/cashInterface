@@ -18,7 +18,6 @@ const cashBlock = css`
     display: flex;
     justify-content: center;
     align-items: center;
-
     & h1 {
       color: #212129;
       font-weight: bold;
@@ -29,6 +28,7 @@ const cashBlock = css`
       width: 50%;
       position: absolute;
       opacity: 0;
+      z-index: -1;
       background: white;
       padding: 10px 15px;
       border: none;
@@ -87,9 +87,10 @@ const cashBlock = css`
   }
 
   .cashMenu {
-    height: auto;
-    width: 100%;
+    height: 90vh;
     position: relative;
+    overflow-y: scroll;
+    width: 100%;
     & h1 {
       font-size: 22px;
       font-weight: 650;
@@ -98,7 +99,6 @@ const cashBlock = css`
     }
 
     .cashMenu_block {
-      height: auto;
       width: 95%;
       padding: 10px 10px 20px 10px ;
       background: white;
@@ -256,7 +256,7 @@ const Home = () => {
     const TokenRefresh = `${token.token.refresh}`
 
     useEffect(() => {
-        axios.get(`http://162.19.158.34/api/product/list/` , {headers: {
+        axios.get(`https://s225912.hostiman.com/api/product/list/` , {headers: {
             "Authorization" : `Bearer ${Token}`
             }})
             .then(({data}) => {
@@ -265,7 +265,7 @@ const Home = () => {
             })
     }, [Token])
     useEffect(() => {
-        axios.get(`http://162.19.158.34/api/category/list/` , {headers: {
+        axios.get(`https://s225912.hostiman.com/api/category/list/` , {headers: {
             "Authorization" : `Bearer ${Token}`
             }})
             .then(({data}) => {
@@ -274,7 +274,7 @@ const Home = () => {
             })
     }, [Token])
     useEffect(()=>{
-        axios.post("http://162.19.158.34/api/token/refresh/", {
+        axios.post("https://s225912.hostiman.com/api/token/refresh/", {
                 "refresh" : TokenRefresh
             },
             {
@@ -286,21 +286,22 @@ const Home = () => {
                 localStorage.setItem('tokenRefresh', JSON.stringify(res.data))
             })
             .catch(err => console.log(err))
-    }, [Token])
+    }, [TokenRefresh])
     const searchCard = (el) => {
         let value = el.target.value.toLowerCase()
         if (value.length > 2 ){
-            axios.get(`http://162.19.158.34/api/product/search/?search=${value}` , {headers: {
+            axios.get(`https://s225912.hostiman.com/api/product/search/?search=${value}` , {headers: {
                     "Authorization" : `Bearer ${Token}`
                 }})
                 .then((res) => {
-                    console.log(res.data[0])
                     dispatch({ type : ADD_CART , payload : res.data[0]})
+                    el.target.value = ""
                 })
         }
         return setSearch(card)
     }
-    /// 47000012312 400072312312 400072312312
+
+
     const filter = ({name}) => {
         let valueFilter = name.toLowerCase()
         let result = []

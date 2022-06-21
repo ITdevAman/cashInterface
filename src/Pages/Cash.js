@@ -12,6 +12,7 @@ import {
 } from "../Redux/actions";
 import Modal from 'react-modal';
 import axios from "axios";
+import Example from "./Check/Check";
 
 
 
@@ -269,78 +270,6 @@ const cashTotal = css`
     }
   }
 `
-const payment = css`
-  padding-top: 30px;
-
-  .payment_h {
-    font-size: 22px;
-    font-weight: 700;
-  }
-
-  .payment_block {
-    margin-top: 15px;
-    width: 100%;
-    position: relative;
-    padding: 5px;
-    display: flex;
-    justify-content: space-between;
-
-    &_cart {
-      padding-top: 10px;
-      width: 90px;
-      height: 70px;
-      border-radius: 15px;
-      background: rgba(234, 191, 178, 0.53);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      transition: .3s;
-      border: none;
-
-      &_icon {
-        font-size: 28px;
-        color: #777777;
-      }
-
-      &:hover {
-        background: #eabfb2;
-        border: 2px solid #77402F;
-        box-shadow: 0 0 2px #77402F;
-      }
-
-      &:hover p {
-        color: #77402F;
-      }
-
-      &:hover .payment_block_cart_icon {
-        color: #77402F;
-      }
-
-      & p {
-        font-size: 12px;
-        font-weight: 700;
-        transition: .3s;
-        color: #777777;
-      }
-    }
-  }
-
-  .payment_button {
-    margin-top: 20px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 17px;
-    padding: 15px 0;
-    border: none;
-    font-weight: 900;
-    border-radius: 15px;
-    color: white;
-    background: #77402F;
-  }
-`
 const spanX = css`
   font-size: 10px;
   position: absolute;
@@ -439,13 +368,11 @@ const totalClientBlock = css`
       color: white;
     }
   }
-
   .TotalClient_account {
     font-size: 15px;
     font-weight: 600;
     margin-top: 20px;
   }
-
   .TotalClient_accounT {
     font-size: 16px;
     font-weight: 800;
@@ -494,78 +421,7 @@ const Alert = css`
     }
   }
 `
-const CheckBlock = css`
-  margin-top: 50px;
-  width: 100%;
-  height: auto;
-  padding:15px;
-  border : 1px  solid black ;
-    & h1{
-      font-size: 16px;
-      font-weight: 500;
-    }
-  .CheckBlock_address{
-    & p {
-      font-weight: 250;
-      font-size: 15px;
-      line-height: 15px;
-    }
-    .CheckBlock_address_p{
-      line-height: 20px;
-      font-size: 16px;
-      font-weight: 300;
-    }
-  }
-  .CheckBlock_address_time{
-    display: flex;
-    justify-content: space-between;
-    font-weight: 250;
-    font-size: 15px;
-    line-height: 15px;
-    .CheckBlock_address_time_p{
-      font-weight: 400;
-    }
-  }
-  .CheckBlock{
-    & div{
-      display: flex;
-      justify-content: space-between;
-      & h1{
-        font-size: 15px;
-        font-weight: 600;
-      }
-    }
-  }
 
-`
-const CheckBlockCard = css`
-    .CheckBlockCard_title{
-      font-size: 18px ;
-      line-height: 15px;
-    }
-  .CheckBlockCard{
-    display: flex;
-    justify-content: end;
-    & p {
-      line-height: 15px;
-      font-weight: 250;
-      font-size: 14px;
-      & span {
-        font-weight: 350;
-        font-size: 17px;
-        padding-left: 10px;
-      }
-    }
-  }
-`
-const ClosedCheckBlock = css`
-    display: flex;
-  justify-content: end;
-  & button {
-    border: none;
-    
-  }
-`
 
 const Cash = () => {
     const dispatch = useDispatch()
@@ -595,14 +451,13 @@ const Cash = () => {
 ////////
     //cash
     const [client, setClient] = useState('')
-    const [cash, setCash] = useState(false)
     const [cashValue, setCashValue] = useState(0)
     const Client = (e) => {
         setClient(e.target.value)
     }
     const totalPrice = cart.reduce((acc, el) => el.count * el.price + acc, 0)
     const Cash = () => {
-        return setCash(true)
+
     }
     useEffect(() => {
         const cashSum = client - totalPrice
@@ -611,9 +466,8 @@ const Cash = () => {
     //post , get // start
     const Token = tokenRefresh.access
 
-
     useEffect(() => {
-        axios("http://162.19.158.34/api/cash-session/info/", {
+        axios("https://s225912.hostiman.com/api/cash-session/info/", {
             headers: {
                 "Authorization": `Bearer ${Token}`
             }
@@ -631,7 +485,7 @@ const Cash = () => {
 
     const Pay = (e) => {
         e.preventDefault()
-        axios.post("http://162.19.158.34/api/operation/create/", {
+        axios.post("https://s225912.hostiman.com/api/operation/create/", {
                 "products":
                     cart.map((el) => {
                             const totalSum = el.count * el.price
@@ -664,7 +518,7 @@ const Cash = () => {
     }
     const submitStart = (e) => {
         e.preventDefault()
-        axios.post("http://162.19.158.34/api/cash-session/start/", {
+        axios.post("https://s225912.hostiman.com/api/cash-session/start/", {
                 money_start: state.start
             },
             {
@@ -682,7 +536,7 @@ const Cash = () => {
 
     function submitEnd(e) {
         e.preventDefault()
-        axios.patch("http://162.19.158.34/api/cash-session/finish/", {
+        axios.patch("https://s225912.hostiman.com/api/cash-session/finish/", {
                 money_end: state.end
             },
             {
@@ -699,10 +553,6 @@ const Cash = () => {
     }
 
     //////
-    const ClosedCheck = () => {
-        return document.location.reload()
-    }
-
     return (
         <div>
             <div className={Alert}>
@@ -859,76 +709,7 @@ const Cash = () => {
                             }
                         </div>
                     </div>
-                    <div className={payment}>
-                        {/*/!*<span className="payment_h">Payment Method</span>*!/*/}
-                        {/* <div className="payment_block">*/}
-                        {/*    <button onClick={cartCashBtn} className="payment_block_cart">*/}
-                        {/*        <FontAwesomeIcon icon={faMoneyBill1Wave} className="payment_block_cart_icon"/>*/}
-                        {/*        <p>Cash</p>*/}
-                        {/*    </button>*/}
-                        {/*    <button onClick={debitCashBtn} className="payment_block_cart">*/}
-                        {/*        <FontAwesomeIcon icon={faCreditCard} className="payment_block_cart_icon"/>*/}
-                        {/*        <p>Debit Card</p>*/}
-                        {/*    </button>*/}
-                        {/*    <button onClick={debitCashBtn} className="payment_block_cart">*/}
-                        {/*        <FontAwesomeIcon icon={faWallet} className="payment_block_cart_icon"/>*/}
-                        {/*        <p>E-Wallet</p>*/}
-                        {/*    </button>*/}
-                        {/*</div>*/}
-                        <button onClick={Cash} className="payment_button">
-                            Печать счетов
-                        </button>
-                    </div>
-                    <div>
-                        {
-                            !cash ? <></> :
-                                <div id={checkData.id}  className={CheckBlock}>
-                                    <div className={ClosedCheckBlock}>
-                                        <button onClick={ClosedCheck}>X</button>
-                                    </div>
-                                    <h1>Kaccовый чек</h1>
-                                    <div className={"CheckBlock_address"}>
-                                        <p className={"CheckBlock_address_p"}>ПРИХОД</p>
-                                        <p>Аптека " Фармамир, сеть аптек "</p>
-                                        <p>720073 , 5-й м-н, Октябрьский район, Бишкек</p>
-                                    </div>
-                                    <div className={"CheckBlock_address_time"}>
-                                        <p>{checkData.date_issue}</p>
-                                        <p className={"CheckBlock_address_time_p"}>Чек № {checkData.id}</p>
-                                    </div>
-                                    <hr noshade/>
-                                    <div>
-                                        {
-                                            checkData.products.map((item) => {
-                                                return (
-                                                    <div className={CheckBlockCard}>
-                                                        <p className={"CheckBlockCard_title"}>{item.name}</p>
-                                                        <div className={"CheckBlockCard"}>
-                                                            <p>
-                                                                {item.price} X {item.quantity} <span>= {Math.floor(item.sum)}</span>
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                )
-                                            })
-                                        }
-                                    </div>
-                                    <hr/>
-                                    <div className={"CheckBlock"}>
-                                        <div>
-                                            <h1>ИТОГ</h1><h1>{checkData.sum_product}</h1>
-                                        </div>
-                                        <div>
-                                            <h1>ПОЛУЧЕНО НАЛИЧНЫМИ</h1><h1>{checkData.money_received}</h1>
-                                        </div>
-                                        <div>
-                                            <h1>СДАЧА</h1><h1>{checkData.change}</h1>
-                                        </div>
-                                    </div>
-                                </div>
-                        }
-                    </div>
-
+                    <Example/>
                 </div>
             </div>
         </div>

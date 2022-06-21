@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import axios from "axios"
 import {useDispatch} from "react-redux";
 import {GET_PERSON} from "../../Redux/actions";
@@ -92,7 +92,7 @@ const Login = () => {
 
     function submit (e){
         e.preventDefault()
-        return  axios.post("http://162.19.158.34/api/token/",
+        return  axios.post("https://s225912.hostiman.com/api/token/",
             {
                 email : data.email,
                 password : data.password

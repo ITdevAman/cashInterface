@@ -1,5 +1,4 @@
 import React from 'react';
-import img from "../../Assets/images/cash.jpg";
 import logo from "../../Assets/images/Снимок экрана 2022-05-23 в 16.40.54.png";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {
