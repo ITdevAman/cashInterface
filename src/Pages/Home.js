@@ -16,7 +16,7 @@ const cashBlock = css`
 
   .cashBlockSeach {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     & h1 {
       color: #212129;
@@ -26,9 +26,6 @@ const cashBlock = css`
 
     & input {
       width: 50%;
-      position: absolute;
-      opacity: 0;
-      z-index: -1;
       background: white;
       padding: 10px 15px;
       border: none;
@@ -39,8 +36,55 @@ const cashBlock = css`
   .cashFilter {
     margin-top: 20px;
     width: 100%;
+    padding: 15px 2px;
+    height: 130px;
+    display: flex;
+    justify-content: space-between;
+    &_cart {
+      width: 110px;
+      height: 100%;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 5px;
+      border-radius: 15px;
+      background: white;
+      margin: 0 5px;
+      border: 1px solid #C7C7C7;
+      text-align: center;
+      transition: .4s;
+
+      &:hover {
+        background: #F5EFEF;
+        border: 1px solid #805E5A;
+        box-shadow: 0 0 3px #805E5A;
+      }
+
+      &:hover h1 {
+        color: #805E5A;
+      }
+
+      & img {
+        margin: 10px 0;
+        width: 50%;
+        height: 40px;
+        object-fit: contain;
+      }
+      & h1 {
+        margin: 5px 10px;
+        font-size: 12px;
+        color: #897C81;
+        font-weight: 600;
+      }
+    }
+  }
+  .cashFilter2 {
     position: relative;
     overflow: scroll;
+    margin-top: 20px;
+    width: 100%;
     padding: 15px 2px;
     height: 130px;
     display: flex;
@@ -88,7 +132,6 @@ const cashBlock = css`
   .cashMenu {
     height: 130vh;
     position: relative;
-    overflow-y: scroll;
     width: 100%;
     & h1 {
       font-size: 22px;
@@ -315,7 +358,7 @@ const Home = () => {
                     <h1>Выберите категорию</h1>
                     <input type="search" onChange={el => searchCard(el)} placeholder="Поиск продукта"/>
                 </div>
-                <div className="cashFilter">
+                <div className={category.length > 5 ? "cashFilter2" : "cashFilter"}>
                     <button onClick={()=>filter({name: ""})} className="cashFilter_cart">
                         <img src={beer} alt=""/>
                         <h1>

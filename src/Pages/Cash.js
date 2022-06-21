@@ -85,13 +85,15 @@ const cashBasket = css`
 
     .basket_block2 {
       overflow: scroll;
+      position: relative;
+      height: 500px;
+      width: 120%;
+      padding-right: 7%;
     }
 
     .basket_block {
-      overflow: scroll;
       position: relative;
-      width: 100%;
-      height: 400px;
+      width: 113%;
 
       &_cart {
         margin: 20px 0;
@@ -640,7 +642,7 @@ const Cash = () => {
                 </div>
                 <div className="cash_basket">
                     <h1>Корзина</h1>
-                    <div className={cart.length > 3 ? "basket_block" : "basket_block2"}>
+                    <div className={cart.length > 3 ? "basket_block2" : "basket_block"}>
                         {
                             cart.length === 0 ? (<p>Ваша корзина пуста...</p>) :
                                 cart.map((item) => {
