@@ -36,11 +36,11 @@ const cashBlock = css`
       border-radius: 10px;
     }
   }
-
   .cashFilter {
     margin-top: 20px;
     width: 100%;
     position: relative;
+    overflow: scroll;
     padding: 15px 2px;
     height: 130px;
     display: flex;
@@ -85,9 +85,8 @@ const cashBlock = css`
       }
     }
   }
-
   .cashMenu {
-    height: 90vh;
+    height: 130vh;
     position: relative;
     overflow-y: scroll;
     width: 100%;
@@ -327,13 +326,14 @@ const Home = () => {
                     {
                         category.map((item)=>{
                             return <button id={item.id} onClick={()=>filter({name: item.name})} className="cashFilter_cart">
-                                    <img src={coffee} alt=""/>
-                                    <h1>
-                                        {item.name}
-                                    </h1>
+                                <img src={coffee} alt=""/>
+                                <h1>
+                                    {item.name}
+                                </h1>
                             </button>
                         })
                     }
+
                 </div>
                 <div className="cashMenu">
                     <h1>Аптека</h1>
