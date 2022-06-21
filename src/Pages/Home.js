@@ -330,7 +330,7 @@ const Home = () => {
     }, [TokenRefresh])
     const searchCard = (el) => {
         let value = el.target.value.toLowerCase()
-        if (value.length > 2 ){
+        if (value.length === 13 ){
             axios.get(`https://s225912.hostiman.com/api/product/search/?search=${value}` , {headers: {
                     "Authorization" : `Bearer ${tokenRefresh}`
                 }})
