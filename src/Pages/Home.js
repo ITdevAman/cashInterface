@@ -250,27 +250,26 @@ const Home = () => {
     const [category, setCategory] = useState([])
     const dispatch = useDispatch()
     const {token , is_active ,tokenRefresh} = useSelector(store => store)
-    const Token = tokenRefresh
     const TokenRefresh = `${token.token.refresh}`
 
     useEffect(() => {
         axios.get(`https://s225912.hostiman.com/api/product/list/` , {headers: {
-            "Authorization" : `Bearer ${Token}`
+            "Authorization" : `Bearer ${tokenRefresh}`
             }})
             .then(({data}) => {
                 setCard(data)
                 setSearch(data)
             })
-    }, [Token])
+    }, [tokenRefresh])
     useEffect(() => {
         axios.get(`https://s225912.hostiman.com/api/category/list/` , {headers: {
-            "Authorization" : `Bearer ${Token}`
+            "Authorization" : `Bearer ${tokenRefresh}`
             }})
             .then(({data}) => {
                 setCategory(data)
                 setFilterCategory(data)
             })
-    }, [Token])
+    }, [tokenRefresh])
     useEffect(()=>{
         axios.post("https://s225912.hostiman.com/api/token/refresh/", {
                 "refresh" : TokenRefresh
@@ -289,7 +288,7 @@ const Home = () => {
         let value = el.target.value.toLowerCase()
         if (value.length > 2 ){
             axios.get(`https://s225912.hostiman.com/api/product/search/?search=${value}` , {headers: {
-                    "Authorization" : `Bearer ${Token}`
+                    "Authorization" : `Bearer ${tokenRefresh}`
                 }})
                 .then((res) => {
                     dispatch({ type : ADD_CART , payload : res.data[0]})

@@ -461,17 +461,16 @@ const Cash = () => {
         return setCashValue(cashSum)
     })
     //post , get // start
-    const Token = tokenRefresh
 
     useEffect(() => {
         axios("https://s225912.hostiman.com/api/cash-session/info/", {
             headers: {
-                "Authorization": `Bearer ${Token}`
+                "Authorization": `Bearer ${tokenRefresh}`
             }
         })
             .then(res => dispatch({type: CASH_SESSION_START, payload: res.data}))
             .catch(err => console.log(err.message))
-    }, [Token])
+    }, [tokenRefresh])
     //post
     const [state, setState] = useState({start: "", end: ""})
     const inputValue = (s) => {
@@ -503,7 +502,7 @@ const Cash = () => {
             },
             {
                 headers: {
-                    "Authorization": `Bearer ${Token}`,
+                    "Authorization": `Bearer ${tokenRefresh}`,
                     "Accept": 'application/json, text/plain',
                     "Content-Type": 'application/json'
                 }
@@ -520,7 +519,7 @@ const Cash = () => {
             },
             {
                 headers: {
-                    "Authorization": `Bearer ${Token}`
+                    "Authorization": `Bearer ${tokenRefresh}`
                 }
             })
             .then((res) => {
@@ -528,7 +527,7 @@ const Cash = () => {
                 closeModal()
                 document.location.reload()
             })
-            .catch(err => console.log(err.message))
+            .catch(err => console.log(err))
     }
 
     function submitEnd(e) {
@@ -538,7 +537,7 @@ const Cash = () => {
             },
             {
                 headers: {
-                    "Authorization": `Bearer ${Token}`
+                    "Authorization": `Bearer ${tokenRefresh}`
                 }
             })
             .then((res) => {

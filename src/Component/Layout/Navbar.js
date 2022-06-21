@@ -85,13 +85,12 @@ const cashMenu = css`
     }
   }
   .logOut{
-    margin-top: 60vh;
     position: relative;
     width: 100%;
     display: flex;
     justify-items: center;
     flex-direction: column;
-    margin-left: 5px;
+    margin-left: 10px;
     & button{
       border:none;
       position: relative;
