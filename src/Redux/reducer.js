@@ -2,9 +2,9 @@
 import {applyMiddleware, createStore} from "redux";
 import {composeWithDevTools } from "redux-devtools-extension";
 import {
-    ADD_CART,
+    ADD_CART, BOX,
     CASH_SESSION_START,
-    GET_BASED, GET_CHECK, GET_CHECK_PRODUCT,
+    GET_BASED, GET_BASED_PIECE, GET_CHECK, GET_CHECK_PRODUCT,
     GET_PERSON,
     MIN_CART,
     REMOVE_CART,
@@ -41,7 +41,7 @@ const shopReducer = (state = initialState, action) => {
                 findProduct.count++
                 return {...state, cart : state.cart.map(el => el.id === findProduct.id ? findProduct : el)}
             } else {
-                return {...state,cart : [...state.cart, {...action.payload, count: 1}]}
+                return {...state,cart : [...state.cart, {...action.payload, count: 0,countPiece : 0}]}
             }
         case REMOVE_CART :
             return {...state, cart: state.cart.filter((el) => el.id !== action.item.id)}
@@ -59,6 +59,13 @@ const shopReducer = (state = initialState, action) => {
                 return {...state, cart : state.cart.map(el => el.id === findProductQuantity.id ? findProductQuantity : el)}
             }
             return {...state, cart : state.cart.map(el => el.id === findProductQuantity.id ? findProductQuantity : el)}
+        case GET_BASED_PIECE:
+            const countPieceProductQuantity = state.cart.find((el) => el.id === action.payload.id)
+            if (countPieceProductQuantity){
+                countPieceProductQuantity.countPiece = action.payload.count
+                return {...state, cart : state.cart.map(el => el.id === countPieceProductQuantity.id ? countPieceProductQuantity : el)}
+            }
+            return {...state, cart : state.cart.map(el => el.id === countPieceProductQuantity.id ? countPieceProductQuantity : el)}
         case GET_PERSON :
             return {
                 ...state ,
@@ -83,7 +90,10 @@ const shopReducer = (state = initialState, action) => {
             return {
                 ...state , check_product: [state.check_product , {...action.payload}]
             }
-
+        case BOX :
+            return {
+                ...state , cart: []
+            }
         default:
             return state
     }

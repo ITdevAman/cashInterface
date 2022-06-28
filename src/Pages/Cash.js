@@ -2,11 +2,11 @@ import React, {useEffect, useState} from 'react';
 import {css} from "@emotion/css";
 import logo from "../Assets/images/Снимок экрана 2022-05-23 в 16.40.54.png";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faPlay, faStop} from "@fortawesome/free-solid-svg-icons";
+import {faArrowRotateLeft, faPlay, faStop} from "@fortawesome/free-solid-svg-icons";
 import {useSelector, useDispatch} from "react-redux";
 import {
-    ADD_CART, CASH_SESSION_START,
-    GET_BASED, GET_CHECK,
+    ADD_CART, BOX, CASH_SESSION_START,
+    GET_BASED, GET_BASED_PIECE, GET_CHECK,
     MIN_CART,
     REMOVE_CART
 } from "../Redux/actions";
@@ -27,10 +27,8 @@ const customStyles = {
 };
 const cashBasket = css`
   width: 100%;
-  height: 100vh;
   position: relative;
   padding-top: 15px;
-
   .person {
     display: flex;
     justify-content: space-between;
@@ -58,14 +56,23 @@ const cashBasket = css`
 
       .person_desc {
         padding-left: 10px;
-
-        & p {
-          color: #C7C7C7;
-          font-size: 12px;
-          font-weight: 700;
+        width: 250px;
+        position: relative;
+        overflow-x: auto;
+        padding-bottom: 15px;
+        padding-top: 25px;
+        & h1 {
           line-height: 5px;
+          font-size: 16px;
+          font-weight: 700;
         }
-
+      }
+      .person_desc1 {
+        padding-left: 10px;
+        width: 250px;
+        position: relative;
+        padding-bottom: 15px;
+        padding-top: 25px;
         & h1 {
           line-height: 5px;
           font-size: 16px;
@@ -74,15 +81,12 @@ const cashBasket = css`
       }
     }
   }
-
   .cash_basket {
     padding-top: 30px;
-
     & h1 {
       font-weight: 700;
       font-size: 26px;
     }
-
     .basket_block2 {
       overflow: scroll;
       position: relative;
@@ -104,7 +108,7 @@ const cashBasket = css`
 
         &_block {
           display: flex;
-
+          align-items: center;
           &_img {
             width: 60px;
             height: 55px;
@@ -123,7 +127,6 @@ const cashBasket = css`
 
           &_name {
             padding-left: 10px;
-
             & p {
               color: #a4a4a4;
               font-size: 14px;
@@ -133,10 +136,10 @@ const cashBasket = css`
 
             & h3 {
               color: #a4a4a4;
-              font-size: 16px;
+              font-size: 14px;
               font-weight: 700;
-              line-height: 5px;
               margin-left: 20px;
+              
             }
 
             & h1 {
@@ -149,15 +152,44 @@ const cashBasket = css`
       }
     }
   }
-
   .cartDelete {
     display: flex;
     position: relative;
     width: 100%;
     padding: 5px 0;
     justify-content: space-between;
+    align-items: center;
     transition: .4s;
-
+    .cartDeleteBlock{
+      display: flex;
+      flex-direction: column;
+      margin-top: -5%;
+    }
+    .cartDeleteQuantity{
+      display: flex;
+      width: 100%;
+      position: relative;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 5px;
+      padding: 0 5px;
+      .cartDeleteQuantity_block{
+        display: flex;
+        flex-direction: column;
+        padding-top: 5px;
+        & p{
+          font-weight: 500;
+          font-size: 15px;
+          line-height: 5px;
+        }
+        & h5{
+          font-weight: 500;
+          font-size: 15px;
+          color: red;
+          line-height: 5px;
+        }
+      }
+    }
     .cartBtn {
       height: 35px;
       width: 20%;
@@ -180,7 +212,11 @@ const cashBasket = css`
 
     .cartInput {
       height: 35px;
-      width: 70%;
+      width: 60%;
+    }
+    .cartInput1 {
+      height: 35px;
+      width: 30%;
     }
 
     .cartBtnDel {
@@ -195,7 +231,6 @@ const cashBasket = css`
       color: white;
       background: red;
       transition: .4s;
-
       &:hover {
         border: 1px solid #77402F;
       }
@@ -391,9 +426,8 @@ const Alert = css`
     width: 400px;
     margin-top: -100px;
     z-index: 99;
-    margin-left: -30%;
+    margin-left: -36%;
   }
-
   .finished {
     width: 400px;
     color: white;
@@ -439,6 +473,11 @@ const payment = css`
     background: #77402F;
   }
 `
+const Restart = css`
+  background: transparent;
+  border: none;
+`
+
 
 const Cash = () => {
     const dispatch = useDispatch()
@@ -452,17 +491,12 @@ const Cash = () => {
     function openModal() {
         setIsOpen(true);
     }
-    const CashBtn = () => {
-        return document.location.reload()
-    }
     function afterOpenModal() {
         subtitle.style.color = '#f00';
     }
-
     function closeModal() {
         setIsOpen(false);
     }
-
     css`.cartDelete {
       opacity: 1;
       height: auto;
@@ -474,7 +508,12 @@ const Cash = () => {
     const Client = (e) => {
         setClient(e.target.value)
     }
-    const totalPrice = cart.reduce((acc, el) => el.count * el.price + acc, 0)
+    const btnClose = () => {
+        dispatch({type: BOX})
+        setClient('')
+    }
+
+    const totalPrice = cart.reduce((acc, el) => (el.count * el.price) + (el.countPiece * el.piece_price) + acc, 0)
     useEffect(() => {
         const cashSum = client - totalPrice
         return setCashValue(cashSum)
@@ -497,7 +536,6 @@ const Cash = () => {
         inputData[s.target.id] = s.target.value
         setState(inputData)
     }
-
     const Pay = (e) => {
         e.preventDefault()
         axios.post("https://s225912.hostiman.com/api/operation/create/", {
@@ -507,7 +545,9 @@ const Cash = () => {
                             return {
                                 "name": `${el.name}`,
                                 "price": Math.floor(el.price),
-                                "quantity": el.count,
+                                "quantity_package": el.count,
+                                "piece_price": Math.floor(el.piece_price),
+                                "quantity_piece": el.countPiece,
                                 "sum": `${totalSum}`,
                                 "barcode": el.barcode,
                                 "product": el.id
@@ -548,7 +588,6 @@ const Cash = () => {
             })
             .catch(err => console.log(err))
     }
-
     function submitEnd(e) {
         e.preventDefault()
         axios.patch("https://s225912.hostiman.com/api/cash-session/finish/", {
@@ -566,7 +605,9 @@ const Cash = () => {
             })
             .catch(err => console.log(err.message))
     }
-
+    const restart = () => {
+      return document.location.reload()
+    }
     //////
     return (
         <div>
@@ -584,8 +625,7 @@ const Cash = () => {
                         <div className="person_img">
                             <img src={logo} alt=""/>
                         </div>
-                        <div className="person_desc">
-                            <p>Я Кассир</p>
+                        <div className={token.email.length > 21? "person_desc" : "person_desc"}>
                             <h1>{token.email}</h1>
                         </div>
                     </div>
@@ -628,7 +668,7 @@ const Cash = () => {
                                             <p>В кассе была сумма : {getInfo.map((e) =>
                                                 <span>{e.money_start}</span>)} </p>
                                             <p>Объем продаж : {getInfo.map((e) =>
-                                                <span>{e.money_collected}</span>)} </p>
+                                                <span>{e.money_collected}</span>)} <button className={Restart} onClick={restart}><FontAwesomeIcon icon={faArrowRotateLeft}/></button></p>
                                         </div>
                                         <form>
                                             <button className={"btn_close"} onClick={closeModal}>Отмена</button>
@@ -646,6 +686,7 @@ const Cash = () => {
                         {
                             cart.length === 0 ? (<p>Ваша корзина пуста...</p>) :
                                 cart.map((item) => {
+                                    const countInputValue = item.number_packages * item.piece_quantity
                                     return (
                                         <div id={item.id}>
                                             <div className="basket_block_cart">
@@ -668,25 +709,52 @@ const Cash = () => {
                                                                 </div>
                                                             </div> : <></>
                                                         }
-                                                        <p>x<span className={span}>{item.count}</span></p>
+                                                        <p>Упаковка : <span className={span}> {item.count}  [ {item.price}сом ]</span></p>
+                                                        <div>
+                                                            {item.piece_quantity > 0 ? <div><p>Штук : <span className={span}> {item.countPiece}  [ {item.piece_price}сом ]</span></p></div> : <></>}
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div className="basket_block_cart_block_name">
-                                                    <h3><span className={spanX}>C</span>{item.price}</h3>
+                                                    <h3><span className={spanX}>C</span>{Math.floor(item.price*item.count)}</h3>
+                                                    {
+                                                        item.piece_quantity > 0 ? <div><h3><span className={spanX}>C</span>{Math.floor(item.piece_price) * item.countPiece}</h3></div> : <></>
+                                                    }
                                                 </div>
                                             </div>
                                             <div className={"cartDelete"}>
-                                                <button className={"cartBtn"}
-                                                        onClick={() => dispatch({type: MIN_CART, id: item.id})}>-
-                                                </button>
-                                                <input className={"cartInput"} placeholder={"Kоличество"}
-                                                       id={"quantity"} onChange={s => dispatch({
-                                                    type: GET_BASED,
-                                                    payload: {id: item.id, count: s.target.value}
-                                                })} type="number"/>
-                                                <button className={"cartBtn"}
-                                                        onClick={() => dispatch({type: ADD_CART, payload : item})}>+
-                                                </button>
+                                                <div className="cartDeleteBlock">
+                                                    <div className={"cartDeleteQuantity"}>
+                                                        <button className={"cartBtn"}
+                                                                onClick={() => dispatch({type: MIN_CART, id: item.id})}>-
+                                                        </button>
+                                                        <input className={"cartInput"} placeholder={"Упаковка"}
+                                                               id={"quantity"} onChange={s => dispatch({
+                                                            type: GET_BASED,
+                                                            payload: {id: item.id, count: s.target.value}
+                                                        })} type="number"/>
+                                                        <button className={"cartBtn"}
+                                                                onClick={() => dispatch({type: ADD_CART, payload : item})}>+
+                                                        </button>
+                                                    </div>
+                                                    <div>
+                                                        {
+                                                            item.piece_quantity > 0 ? <div className={"cartDeleteQuantity"}>
+                                                                <div className={"cartDeleteQuantity_block"}>
+                                                                    <p>Kоличество штук</p>
+                                                                    {
+                                                                        countInputValue > item.countPiece ? <></> : <h5>Всего {countInputValue} товаров</h5>
+                                                                    }
+                                                                </div>
+                                                                <input className={"cartInput1"} placeholder={"0"}
+                                                                       id={"quantity"} onChange={s => dispatch({
+                                                                    type: GET_BASED_PIECE,
+                                                                    payload: {id: item.id, count: s.target.value}
+                                                                })} type="number"/>
+                                                            </div> : <></>
+                                                        }
+                                                    </div>
+                                                </div>
                                                 <button className={"cartBtnDel"}
                                                         onClick={() => dispatch({type: REMOVE_CART, item})}>Удалить
                                                 </button>
@@ -701,7 +769,7 @@ const Cash = () => {
                         <div className="cash_total2">
                             <p>Общая стоимость</p>
                             <p>
-                                {totalPrice.toFixed(2)} coм
+                                {totalPrice.toFixed(1)} coм
                             </p>
                         </div>
                         <div className={totalClientBlock}>
@@ -724,7 +792,7 @@ const Cash = () => {
                         </div>
                     </div>
                     <div className={payment}>
-                        <button onClick={CashBtn} className="payment_button">
+                        <button onClick={btnClose} className="payment_button">
                             Завершить
                         </button>
                     </div>
@@ -733,6 +801,5 @@ const Cash = () => {
         </div>
     );
 };
-
 export default Cash;
 
