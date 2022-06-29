@@ -17,6 +17,7 @@ const cashBlock = css`
     display: flex;
     justify-content: space-between;
     align-items: center;
+
     & h1 {
       color: #212129;
       font-weight: bold;
@@ -32,6 +33,7 @@ const cashBlock = css`
       border-radius: 10px;
     }
   }
+
   .cashFilter {
     margin-top: 20px;
     width: 100%;
@@ -39,6 +41,7 @@ const cashBlock = css`
     height: 130px;
     display: flex;
     justify-content: space-between;
+
     &_cart {
       width: 110px;
       height: 100%;
@@ -71,6 +74,7 @@ const cashBlock = css`
         height: 40px;
         object-fit: contain;
       }
+
       & h1 {
         margin: 5px 10px;
         font-size: 12px;
@@ -79,6 +83,7 @@ const cashBlock = css`
       }
     }
   }
+
   .cashFilter2 {
     position: relative;
     overflow: scroll;
@@ -88,6 +93,7 @@ const cashBlock = css`
     height: 130px;
     display: flex;
     justify-content: space-between;
+
     &_cart {
       width: 110px;
       height: 100%;
@@ -120,6 +126,7 @@ const cashBlock = css`
         height: 40px;
         object-fit: contain;
       }
+
       & h1 {
         margin: 5px 10px;
         font-size: 12px;
@@ -128,18 +135,21 @@ const cashBlock = css`
       }
     }
   }
+
   .cashMenu {
     position: relative;
     width: 100%;
+
     & input {
       width: 30%;
       background: white;
       padding: 10px 15px;
-      border: 0.5px solid ;
+      border: 0.5px solid;
       outline: none;
       border-radius: 3px;
       margin-bottom: 10px;
     }
+
     & h1 {
       font-size: 22px;
       font-weight: 650;
@@ -149,11 +159,12 @@ const cashBlock = css`
 
     .cashMenu_block {
       width: 95%;
-      padding: 10px 10px 20px 10px ;
+      padding: 10px 10px 20px 10px;
       background: white;
       border-radius: 15px;
       transition: .4s;
       margin: 20px auto;
+
       &_img {
         width: 100%;
         height: 150px;
@@ -167,50 +178,61 @@ const cashBlock = css`
           object-fit: cover;
         }
       }
+
       &_title {
         margin-top: 10px;
         font-size: 18px;
         font-weight: 650;
       }
+
       &_price {
         margin-left: 18px;
         font-size: 16px;
         font-weight: bold;
       }
-      .priceWithoutDiscount{
-        .priceWithout{
+
+      .priceWithoutDiscount {
+        .priceWithout {
           display: flex;
+
           & p {
             font-weight: 500;
             line-height: 14px;
           }
         }
 
-        &_price{
+        &_price {
           font-size: 14px;
-          line-height:10px;
+          line-height: 10px;
+
           & span {
             font-weight: 600;
           }
         }
-        &_discount{
+
+        &_discount {
           font-size: 14px;
-          line-height:10px;
+          line-height: 10px;
+
           & span {
             font-weight: 600;
           }
         }
       }
+
       .priceWithoutBlock {
         margin-top: 10%;
-        .priceWithout{
+
+        .priceWithout {
           display: flex;
+
           & p {
             font-weight: 500;
             line-height: 14px;
           }
         }
       }
+
       .mood {
         & h1 {
           font-size: 18px;
@@ -259,18 +281,22 @@ const cashBlock = css`
           }
         }
       }
+
       &:hover .cashMenu_block_button_btn {
         height: auto;
         opacity: 1;
       }
+
       &:hover .cashMenu_block_button {
         transform: translateY(0);
       }
+
       &_button {
         position: relative;
         transform: rotateX(85deg);
         transition: .5s;
         margin-top: 5px;
+
         &_btn {
           position: absolute;
           padding: 13px 0;
@@ -306,34 +332,38 @@ const isntActive = css`
 const Home = () => {
     const [card, setCard] = useState([])
     const [filterCategory, setFilterCategory] = useState([])
-    const [search, setSearch] = useState([card,filterCategory])
+    const [search, setSearch] = useState([card, filterCategory])
 
     const [category, setCategory] = useState([])
     const dispatch = useDispatch()
-    const {token , is_active ,tokenRefresh} = useSelector(store => store)
+    const {token, is_active, tokenRefresh} = useSelector(store => store)
     const TokenRefresh = `${token.token.refresh}`
 
     useEffect(() => {
-        axios.get(`https://s225912.hostiman.com/api/product/list/` , {headers: {
-            "Authorization" : `Bearer ${tokenRefresh}`
-            }})
+        axios.get(`https://s225912.hostiman.com/api/product/list/`, {
+            headers: {
+                "Authorization": `Bearer ${tokenRefresh}`
+            }
+        })
             .then(({data}) => {
                 setCard(data)
                 setSearch(data)
             })
     }, [tokenRefresh])
     useEffect(() => {
-        axios.get(`https://s225912.hostiman.com/api/category/list/` , {headers: {
-            "Authorization" : `Bearer ${tokenRefresh}`
-            }})
+        axios.get(`https://s225912.hostiman.com/api/category/list/`, {
+            headers: {
+                "Authorization": `Bearer ${tokenRefresh}`
+            }
+        })
             .then(({data}) => {
                 setCategory(data)
                 setFilterCategory(data)
             })
     }, [tokenRefresh])
-    useEffect(()=>{
+    useEffect(() => {
         axios.post("https://s225912.hostiman.com/api/token/refresh/", {
-                "refresh" : TokenRefresh
+                "refresh": TokenRefresh
             },
             {
                 headers: {
@@ -347,9 +377,11 @@ const Home = () => {
     }, [TokenRefresh])
     const searchCard = (el) => {
         let value = el.target.value.toLowerCase()
-        axios.get(`https://s225912.hostiman.com/api/product/search/?search=${value}` , {headers: {
-                "Authorization" : `Bearer ${tokenRefresh}`
-            }})
+        axios.get(`https://s225912.hostiman.com/api/product/search/?search=${value}`, {
+            headers: {
+                "Authorization": `Bearer ${tokenRefresh}`
+            }
+        })
             .then((res) => {
                 setSearch(res.data)
             })
@@ -357,13 +389,15 @@ const Home = () => {
     }
     const BarCode = (el) => {
         let value = el.target.value.toLowerCase()
-        if (is_active){
-            if (value.length === 13 ){
-                axios.get(`https://s225912.hostiman.com/api/product/search/?search=${value}` , {headers: {
-                        "Authorization" : `Bearer ${tokenRefresh}`
-                    }})
+        if (is_active) {
+            if (value.length === 13) {
+                axios.get(`https://s225912.hostiman.com/api/product/search/?search=${value}`, {
+                    headers: {
+                        "Authorization": `Bearer ${tokenRefresh}`
+                    }
+                })
                     .then((res) => {
-                        dispatch({ type : ADD_CART , payload : res.data[0]})
+                        dispatch({type: ADD_CART, payload: res.data[0]})
                         el.target.value = ""
                     })
             }
@@ -376,11 +410,11 @@ const Home = () => {
         let valueFilter = name.toLowerCase()
         let result = []
         result = card.filter((el) => {
-           return el.category.toLowerCase().search(valueFilter) !== -1 ;
+            return el.category.toLowerCase().search(valueFilter) !== -1;
         })
         setSearch(result)
     }
-        return (
+    return (
         <section id={"Home"}>
             <div className={cashBlock}>
                 <div className="cashBlockSeach">
@@ -388,15 +422,16 @@ const Home = () => {
                     <input type="search" onChange={el => searchCard(el)} placeholder="Поиск продукта"/>
                 </div>
                 <div className={category.length > 5 ? "cashFilter2" : "cashFilter"}>
-                    <button onClick={()=>filter({name: ""})} className="cashFilter_cart">
+                    <button onClick={() => filter({name: ""})} className="cashFilter_cart">
                         <img src={coffee} alt=""/>
                         <h1>
                             All
                         </h1>
                     </button>
                     {
-                        category.map((item)=>{
-                            return <button id={item.id} onClick={()=>filter({name: item.name})} className="cashFilter_cart">
+                        category.map((item) => {
+                            return <button id={item.id} onClick={() => filter({name: item.name})}
+                                           className="cashFilter_cart">
                                 <img src={item.image} alt=""/>
                                 <h1>
                                     {item.name}
@@ -411,76 +446,112 @@ const Home = () => {
                     <div className="cashMenuBlock">
                         <div>
                             {
-                                !is_active  ? <h4 className={isntActive}>Вы еще не начали работу !</h4> : <div className={"row"}>{
-                                    search.map((item) => {
-                                        return(
-                                            <div className="col-lg-6" id={item.id}>
-                                                <div className="cashMenu_block">
-                                                    <div className="row">
-                                                        <div className="col-lg-5">
-                                                            <div className="cashMenu_block_img">
-                                                                <img src={item.image} alt=""/>
+                                !is_active ? <h4 className={isntActive}>Вы еще не начали работу !</h4> :
+                                    <div className={"row"}>{
+                                        search.map((item) => {
+                                            return (
+                                                <div className="col-lg-6" id={item.id}>
+                                                    <div className="cashMenu_block">
+                                                        <div className="row">
+                                                            <div className="col-lg-5">
+                                                                <div className="cashMenu_block_img">
+                                                                    <img src={item.image} alt=""/>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        <div className="col-lg-7">
-                                                            <h1 className="cashMenu_block_title">
-                                                                {item.name}
-                                                            </h1>
-                                                            {
-                                                                item.discount_sum ? <div>
-                                                                    <div className={"priceWithoutDiscount"}>
-                                                                        <div className={"priceWithout"} >
-                                                                            <p>Упаковка :</p> <p className="cashMenu_block_price">{item.number_packages < 0 ? 0 : item.number_packages }</p>
+                                                            <div className="col-lg-7">
+                                                                <h1 className="cashMenu_block_title">
+                                                                    {item.name}
+                                                                </h1>
+                                                                {
+                                                                    item.discount_sum ? <div>
+                                                                        <div className={"priceWithoutDiscount"}>
+                                                                            <div className={"priceWithout"}>
+                                                                                <p>Упаковка :</p> <p
+                                                                                className="cashMenu_block_price">{item.number_packages < 0 ? 0 : item.number_packages}</p>
+                                                                            </div>
+                                                                            <div>
+                                                                                {
+                                                                                    item.piece_in_package > 0 ? <div>
+                                                                                        {
+                                                                                            item.piece_quantity > 0 ? <div className={"priceWithout"}>
+                                                                                                <p>Штук (В упаковке) ostalos : </p>
+                                                                                                <p className="cashMenu_block_price">{item.piece_quantity}</p>
+                                                                                            </div> : <></>
+                                                                                        }
+                                                                                        <div className={"priceWithout"}>
+                                                                                            <p>Штук (В упаковке) : </p>
+                                                                                            <p className="cashMenu_block_price">{item.piece_in_package}</p>
+                                                                                        </div>
+                                                                                        <div className={"priceWithout"}>
+                                                                                            <p>Штук Price :</p> <p
+                                                                                            className="cashMenu_block_price">{item.piece_price}</p>
+                                                                                        </div>
+                                                                                    </div> : <></>
+                                                                                }
+                                                                            </div>
+                                                                            <p className="priceWithoutDiscount_price">
+                                                                                Цена
+                                                                                : <span>{item.price_without_discount}</span>
+                                                                            </p>
+                                                                            <p className="priceWithoutDiscount_discount">
+                                                                                Cкидка
+                                                                                : <span>{item.discount_sum}</span>
+                                                                            </p>
+                                                                        </div>
+                                                                        <div className={"priceWithoutBlock"}>
+                                                                            <div className={"priceWithout"}>
+                                                                                <p>Cтоимость :</p> <p
+                                                                                className="cashMenu_block_price"><span
+                                                                                className={spanX}>с</span>{item.price}
+                                                                            </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div> : <div className={"priceWithoutBlock"}>
+                                                                        <div className={"priceWithout"}>
+                                                                            <p>Упаковка :</p> <p
+                                                                            className="cashMenu_block_price">{item.number_packages}</p>
                                                                         </div>
                                                                         <div>
                                                                             {
-                                                                                item.piece_quantity > 0 ?  <div><div className={"priceWithout"} >
-                                                                                    <p>Штук (В упаковке) :</p> <p className="cashMenu_block_price">{item.piece_quantity}</p>
-                                                                                </div><div className={"priceWithout"} >
-                                                                                    <p>Штук Price :</p> <p className="cashMenu_block_price">{item.piece_price}</p>
-                                                                                </div></div> : <></>
+                                                                                item.piece_in_package > 0 ? <div>
+                                                                                    {
+                                                                                        item.piece_quantity > 0 ? <div className={"priceWithout"}>
+                                                                                            <p>Штук (В упаковке) ostalos : </p>
+                                                                                            <p className="cashMenu_block_price">{item.piece_quantity}</p>
+                                                                                        </div> : <></>
+                                                                                    }
+                                                                                    <div className={"priceWithout"}>
+                                                                                        <p>Штук (В упаковке) :</p> <p
+                                                                                        className="cashMenu_block_price">{item.piece_in_package}</p>
+                                                                                    </div>
+                                                                                    <div className={"priceWithout"}>
+                                                                                        <p>Штук Price :</p> <p
+                                                                                        className="cashMenu_block_price">{item.piece_price}</p>
+                                                                                    </div>
+                                                                                </div> : <></>
                                                                             }
                                                                         </div>
-                                                                        <p className="priceWithoutDiscount_price">
-                                                                            Цена : <span>{item.price_without_discount}</span>
-                                                                        </p>
-                                                                        <p className="priceWithoutDiscount_discount">
-                                                                            Cкидка : <span>{item.discount_sum}</span>
-                                                                        </p>
-                                                                    </div>
-                                                                    <div className={"priceWithoutBlock"}>
-                                                                        <div className={"priceWithout"} >
-                                                                            <p>Cтоимость :</p> <p className="cashMenu_block_price"><span className={spanX}>с</span>{item.price}</p>
+                                                                        <div className={"priceWithout"}>
+                                                                            <p>Cтоимость :</p> <p
+                                                                            className="cashMenu_block_price"><span
+                                                                            className={spanX}>с</span>{item.price}</p>
                                                                         </div>
                                                                     </div>
-                                                                </div>: <div className={"priceWithoutBlock"}>
-                                                                    <div className={"priceWithout"} >
-                                                                        <p>Упаковка :</p> <p className="cashMenu_block_price">{item.number_packages}</p>
-                                                                    </div>
-                                                                    <div>
-                                                                        {
-                                                                            item.piece_quantity > 0 ?  <div><div className={"priceWithout"} >
-                                                                                <p>Штук (В упаковке) :</p> <p className="cashMenu_block_price">{item.piece_quantity}</p>
-                                                                            </div><div className={"priceWithout"} >
-                                                                                <p>Штук Price :</p> <p className="cashMenu_block_price">{item.piece_price}</p>
-                                                                            </div></div> : <></>
-                                                                        }
-                                                                    </div>
-                                                                    <div className={"priceWithout"} >
-                                                                        <p>Cтоимость :</p> <p className="cashMenu_block_price"><span className={spanX}>с</span>{item.price}</p>
-                                                                    </div>
-                                                                </div>
-                                                            }
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                        <div className="cashMenu_block_button">
+                                                            <button onClick={() => dispatch({
+                                                                type: ADD_CART,
+                                                                payload: item
+                                                            })} className="cashMenu_block_button_btn">Добавить в биллинг
+                                                            </button>
                                                         </div>
                                                     </div>
-                                                    <div className="cashMenu_block_button">
-                                                        <button onClick={()=> dispatch({ type : ADD_CART , payload : item })} className="cashMenu_block_button_btn">Добавить в биллинг</button>
-                                                    </div>
                                                 </div>
-                                            </div>
-                                        )
-                                    })
-                                }</div>
+                                            )
+                                        })
+                                    }</div>
                             }
                         </div>
                     </div>

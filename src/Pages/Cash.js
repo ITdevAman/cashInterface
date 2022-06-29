@@ -511,6 +511,7 @@ const Cash = () => {
     const btnClose = () => {
         dispatch({type: BOX})
         setClient('')
+        setPay(false)
     }
 
     const totalPrice = cart.reduce((acc, el) => (el.count * el.price) + (el.countPiece * el.piece_price) + acc, 0)
@@ -519,7 +520,6 @@ const Cash = () => {
         return setCashValue(cashSum)
     })
     //post , get // start
-
     useEffect(() => {
         axios("https://s225912.hostiman.com/api/cash-session/info/", {
             headers: {
@@ -531,6 +531,7 @@ const Cash = () => {
     }, [tokenRefresh])
     //post
     const [state, setState] = useState({start: "", end: ""})
+    const [pay , setPay] = useState(false)
     const inputValue = (s) => {
         const inputData = {...state};
         inputData[s.target.id] = s.target.value
@@ -538,38 +539,41 @@ const Cash = () => {
     }
     const Pay = (e) => {
         e.preventDefault()
-        axios.post("https://s225912.hostiman.com/api/operation/create/", {
-                "products":
-                    cart.map((el) => {
-                            const totalSum = el.count * el.price
-                            return {
-                                "name": `${el.name}`,
-                                "price": Math.floor(el.price),
-                                "quantity_package": el.count,
-                                "piece_price": Math.floor(el.piece_price),
-                                "quantity_piece": el.countPiece,
-                                "sum": `${totalSum}`,
-                                "barcode": el.barcode,
-                                "product": el.id
-                            }
-                        },
-                    ),
-                "sum_product": totalPrice,
-                "money_received": client,
-                "change": Math.floor(cashValue),
-                "operation_type": "cash",
-            },
-            {
-                headers: {
-                    "Authorization": `Bearer ${tokenRefresh}`,
-                    "Accept": 'application/json, text/plain',
-                    "Content-Type": 'application/json'
-                }
-            })
-            .then((res) => {
-                dispatch({type: GET_CHECK, payload: res.data})
-            })
-            .catch(err => console.log(err))
+        {
+            !pay ? axios.post("https://s225912.hostiman.com/api/operation/create/", {
+                    "products":
+                        cart.map((el) => {
+                                const totalSum = el.count * el.price
+                                return {
+                                    "name": `${el.name}`,
+                                    "price": Math.floor(el.price),
+                                    "quantity_package": el.count,
+                                    "piece_price": Math.floor(el.piece_price),
+                                    "quantity_piece": el.countPiece,
+                                    "sum": `${totalSum}`,
+                                    "barcode": el.barcode,
+                                    "product": el.id
+                                }
+                            },
+                        ),
+                    "sum_product": totalPrice,
+                    "money_received": client,
+                    "change": Math.floor(cashValue),
+                    "operation_type": "cash",
+                },
+                {
+                    headers: {
+                        "Authorization": `Bearer ${tokenRefresh}`,
+                        "Accept": 'application/json, text/plain',
+                        "Content-Type": 'application/json'
+                    }
+                })
+                .then((res) => {
+                    dispatch({type: GET_CHECK, payload: res.data})
+                    setPay(true)
+                })
+                .catch(err => console.log(err)) : document.location.reload()
+        }
     }
     const submitStart = (e) => {
         e.preventDefault()
@@ -686,7 +690,7 @@ const Cash = () => {
                         {
                             cart.length === 0 ? (<p>Ваша корзина пуста...</p>) :
                                 cart.map((item) => {
-                                    const countInputValue = item.number_packages * item.piece_quantity
+                                    const countInputValue = item.piece_in_package
                                     return (
                                         <div id={item.id}>
                                             <div className="basket_block_cart">
@@ -711,14 +715,14 @@ const Cash = () => {
                                                         }
                                                         <p>Упаковка : <span className={span}> {item.count}  [ {item.price}сом ]</span></p>
                                                         <div>
-                                                            {item.piece_quantity > 0 ? <div><p>Штук : <span className={span}> {item.countPiece}  [ {item.piece_price}сом ]</span></p></div> : <></>}
+                                                            {item.piece_in_package > 0 ? <div><p>Штук : <span className={span}> {item.countPiece}  [ {item.piece_price}сом ]</span></p></div> : <></>}
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div className="basket_block_cart_block_name">
                                                     <h3><span className={spanX}>C</span>{Math.floor(item.price*item.count)}</h3>
                                                     {
-                                                        item.piece_quantity > 0 ? <div><h3><span className={spanX}>C</span>{Math.floor(item.piece_price) * item.countPiece}</h3></div> : <></>
+                                                        item.piece_in_package > 0 ? <div><h3><span className={spanX}>C</span>{Math.floor(item.piece_price) * item.countPiece}</h3></div> : <></>
                                                     }
                                                 </div>
                                             </div>
@@ -739,7 +743,7 @@ const Cash = () => {
                                                     </div>
                                                     <div>
                                                         {
-                                                            item.piece_quantity > 0 ? <div className={"cartDeleteQuantity"}>
+                                                            item.piece_in_package > 0 ? <div className={"cartDeleteQuantity"}>
                                                                 <div className={"cartDeleteQuantity_block"}>
                                                                     <p>Kоличество штук</p>
                                                                     {
@@ -780,7 +784,7 @@ const Cash = () => {
                                 <button onClick={Pay}>Oплатить</button>
                             </div>
                             {
-                                !checkData ? <p className={"TotalClient_account"}>Cчет...</p> : <div>
+                                !pay ? <p className={"TotalClient_account"}>Cчет...</p> : <div>
                                     <hr/>
                                     <p className={"TotalClient_account"}>Деньги (касса) : {client} coм</p>
                                     <p className={"TotalClient_account"}>Общая стоимость (товар)
