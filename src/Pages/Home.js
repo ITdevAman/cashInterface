@@ -4,6 +4,7 @@ import {css} from "@emotion/css";
 import axios from "axios"
 import {useDispatch, useSelector} from "react-redux";
 import {ADD_CART} from "../Redux/actions";
+import Modal from "react-modal";
 
 
 const cashBlock = css`
@@ -12,7 +13,6 @@ const cashBlock = css`
   position: relative;
   background: #F9F9FB;
   padding: 20px 30px;
-
   .cashBlockSeach {
     display: flex;
     justify-content: space-between;
@@ -57,7 +57,6 @@ const cashBlock = css`
       border: 1px solid #C7C7C7;
       text-align: center;
       transition: .4s;
-
       &:hover {
         background: #F5EFEF;
         border: 1px solid #805E5A;
@@ -158,20 +157,72 @@ const cashBlock = css`
     }
 
     .cashMenu_block {
-      width: 95%;
-      padding: 10px 10px 20px 10px;
+      width: 99%;
+      padding: 20px 20px 25px 20px;
       background: white;
       border-radius: 15px;
       transition: .4s;
-      margin: 20px auto;
+      margin: 16px auto;
+      position: relative;
+      .cashMenu_block_piece{
+        &_btn{
+          position: absolute;
+          width: 50px;
+          height: 50px;
+          border:none;
+          color: white;
+          background: #77402F;
+          border-radius: 10px;
+          right: 0;
+          top: -25px;
+          
+        }
+        &:hover .cashMenu_block_request {
+           opacity: 1;
+          transform: scaleY(1);
+        }
+        .cashMenu_block_request{
+          transition: .3s;
+          transform: scaleY(0);
+          position: absolute;
+          z-index: 33;
+          width: 90%;
+          opacity: 0;
+          background: #77402F;
+          border-radius: 10px;
+          border:none;
+          color: white;
+          font-weight: 600;
+          font-size: 18px;
+          padding: 10px;
+        }
+      }
+      .priceWithout {
+        display: flex;
+        align-items: center;
+        & h2 {
+          font-size: 16px;
+          font-weight: bold;
+          line-height: 16px;
+        }
+        & p {
+          font-weight: 500;
+          line-height: 16px;
+          color: #939393;
+          & span{
+            color: red;
+          }
+        }
+      }
 
       &_img {
         width: 100%;
-        height: 150px;
+        height: 200px;
         position: relative;
         overflow: hidden;
-        border-radius: 15px;
-
+        border: 1px solid #EAEAEA;
+        border-radius: 10px;
+        padding:20px 3px ;
         & img {
           width: 100%;
           height: 100%;
@@ -180,57 +231,47 @@ const cashBlock = css`
       }
 
       &_title {
-        margin-top: 10px;
+        margin-top: 1px;
+        margin-bottom: 15px;
+        font-style: normal;
+        font-weight: 700;
         font-size: 18px;
-        font-weight: 650;
+        line-height: 20px;
+        color: #282F3A;
       }
-
       &_price {
+        margin-top: -4%;
         margin-left: 18px;
         font-size: 16px;
         font-weight: bold;
+        color: black;
       }
-
       .priceWithoutDiscount {
         .priceWithout {
           display: flex;
-
+          align-items: center;
           & p {
             font-weight: 500;
             line-height: 14px;
+            color: #939393;
+            & span{
+              color: red;
+            }
           }
         }
-
-        &_price {
-          font-size: 14px;
-          line-height: 10px;
-
-          & span {
-            font-weight: 600;
-          }
-        }
-
         &_discount {
-          font-size: 14px;
-          line-height: 10px;
-
+          font-size: 16px;
+          font-weight: 500;
+          color: #939393;
+          line-height: 14px;
           & span {
             font-weight: 600;
+            color: black;
           }
         }
       }
-
       .priceWithoutBlock {
         margin-top: 10%;
-
-        .priceWithout {
-          display: flex;
-
-          & p {
-            font-weight: 500;
-            line-height: 14px;
-          }
-        }
       }
 
       .mood {
@@ -293,15 +334,13 @@ const cashBlock = css`
 
       &_button {
         position: relative;
-        transform: rotateX(85deg);
         transition: .5s;
         margin-top: 5px;
-
-        &_btn {
-          position: absolute;
-          padding: 13px 0;
+        display: flex;
+        justify-content: space-between;
+        &_analog{
+          padding: 13px 16px;
           transition: .5s;
-          width: 100%;
           display: flex;
           justify-content: center;
           align-items: center;
@@ -310,35 +349,113 @@ const cashBlock = css`
           font-weight: 900;
           border-radius: 15px;
           color: white;
-          background: #77402F;
-          opacity: 0;
+          background: #5699E8;
+        }
+        &_btn {
+          padding: 13px 16px;
+          transition: .5s;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 17px;
+          border: none;
+          font-weight: 900;
+          border-radius: 15px;
+          color: white;
+          background: #689240;
         }
       }
     }
   }
 `
 const spanX = css`
-  font-size: 10px;
-  position: absolute;
-  margin-left: -8px;
-  margin-top: 2px;
+  font-size: 16px;
+  font-weight: bold;
+  border-bottom: 1px solid black;
 `
 const isntActive = css`
   font-weight: 400;
   font-size: 22px;
   color: #ff2727;
 `
+const customStyles = {
+    content: {
+        top: '50%',
+        left: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        marginRight: '-50%',
+        transform: 'translate(-50%, -50%)',
+    },
+};
+const ModalBlock = css`
+  width: 500px;
+  padding: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  & input {
+    width: 75%;
+    padding: 7px 10px;
+    margin: 20px 0;
+    outline: none;
+  }
+
+  & h1 {
+    display: flex;
+    font-size: 22px;
+    margin-bottom: 24px;
+  }
+
+  & form {
+    width: 75%;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .btn_close {
+      border-radius: 5px;
+      border: none;
+      padding: 8px 24px;
+      background: red;
+      color: white;
+      font-size: 18px;
+    }
+
+    .btn_click {
+      border-radius: 5px;
+      border: none;
+      padding: 8px 24px;
+      background: green;
+      color: white;
+      font-size: 18px;
+    }
+  }
+`
 
 const Home = () => {
     const [card, setCard] = useState([])
     const [filterCategory, setFilterCategory] = useState([])
-    const [search, setSearch] = useState([card, filterCategory])
-
+    const [analogue , setAnalogue] = useState([])
     const [category, setCategory] = useState([])
     const dispatch = useDispatch()
-    const {token, is_active, tokenRefresh} = useSelector(store => store)
+    const {token, is_active ,cart, tokenRefresh} = useSelector(store => store)
+    const [search, setSearch] = useState([card, filterCategory])
     const TokenRefresh = `${token.token.refresh}`
-
+    let subtitle;
+    const [modalIsOpen, setIsOpen] = useState(false);
+    function openModal() {
+        setIsOpen(true);
+    }
+    function afterOpenModal() {
+        subtitle.style.color = '#f00';
+    }
+    function closeModal() {
+        setIsOpen(false);
+    }
     useEffect(() => {
         axios.get(`https://s225912.hostiman.com/api/product/list/`, {
             headers: {
@@ -375,6 +492,31 @@ const Home = () => {
             })
             .catch(err => console.log(err))
     }, [TokenRefresh])
+    const Analogue = (ID) => {
+        axios.get(`https://s225912.hostiman.com/api/product/list/analogue/${ID}`, {
+            headers: {
+                "Authorization": `Bearer ${tokenRefresh}`
+            }
+        })
+            .then((res) => {
+                setAnalogue(res.data)
+            })
+    }
+    const [sendApplication , setSendApplication] = useState('')
+    const SendAnApplication = (ID) => {
+      axios.post("https://s225912.hostiman.com/api/product/inquiry/create/", {
+          product:ID,
+          quantity : sendApplication.length === 0 ? 1 : sendApplication,
+      },{
+          headers: {
+              "Authorization": `Bearer ${tokenRefresh}`
+          }
+      })
+          .then((res)=>{
+              console.log(res.data)
+          })
+          .catch(err=>console.log(err))
+    }
     const searchCard = (el) => {
         let value = el.target.value.toLowerCase()
         axios.get(`https://s225912.hostiman.com/api/product/search/?search=${value}`, {
@@ -390,7 +532,7 @@ const Home = () => {
     const BarCode = (el) => {
         let value = el.target.value.toLowerCase()
         if (is_active) {
-            if (value.length === 13) {
+            if (value.length > 12) {
                 axios.get(`https://s225912.hostiman.com/api/product/search/?search=${value}`, {
                     headers: {
                         "Authorization": `Bearer ${tokenRefresh}`
@@ -398,14 +540,14 @@ const Home = () => {
                 })
                     .then((res) => {
                         dispatch({type: ADD_CART, payload: res.data[0]})
-                        el.target.value = ""
+                        el.target.value = "";
+                        setSearch(res.data)
                     })
             }
         }
         return setSearch(card)
     }
-//400003182391  400072312312
-
+    // 4700003531341 4700040114137 4700002136541
     const filter = ({name}) => {
         let valueFilter = name.toLowerCase()
         let result = []
@@ -449,9 +591,35 @@ const Home = () => {
                                 !is_active ? <h4 className={isntActive}>Вы еще не начали работу !</h4> :
                                     <div className={"row"}>{
                                         search.map((item) => {
+                                            console.log(item)
                                             return (
                                                 <div className="col-lg-6" id={item.id}>
                                                     <div className="cashMenu_block">
+                                                        <div>
+                                                            {item.piece_in_package < 1 ? <div className={"cashMenu_block_piece"}>
+                                                                <button className="cashMenu_block_piece_btn">
+                                                                    {item.piece_in_package}
+                                                                </button>
+                                                                <button onClick={openModal} className={"cashMenu_block_request"}>Отправить заявку</button>
+                                                                <Modal
+                                                                    isOpen={modalIsOpen}
+                                                                    onAfterOpen={afterOpenModal}
+                                                                    onRequestClose={closeModal}
+                                                                    style={customStyles}
+                                                                    contentLabel="Example Modal"
+                                                                >
+                                                                    <div className={ModalBlock}>
+                                                                        <h1>Вы хотите начать работy?</h1>
+                                                                        <input  id={'start'} onChange={(e)=>setSendApplication(e.target.value)}
+                                                                                type="number" placeholder={"Сумма на кассе"}/>
+                                                                        <form>
+                                                                            <button className={"btn_close"} onClick={closeModal}>Отмена</button>
+                                                                            <button className={"btn_click"} onClick={()=>SendAnApplication(item.id)}>Да</button>
+                                                                        </form>
+                                                                    </div>
+                                                                </Modal>
+                                                            </div> :  <></>}
+                                                        </div>
                                                         <div className="row">
                                                             <div className="col-lg-5">
                                                                 <div className="cashMenu_block_img">
@@ -462,85 +630,40 @@ const Home = () => {
                                                                 <h1 className="cashMenu_block_title">
                                                                     {item.name}
                                                                 </h1>
+                                                                <div className={"priceWithout"}>
+                                                                    <p>Остаток :</p> <h6 className="cashMenu_block_price">{item.number_packages < 0 ? 0 : item.number_packages} уп. {item.piece_quantity > 0 ? item.piece_quantity : <></>} шт</h6>
+                                                                </div>
+                                                                <div>
+                                                                    {
+                                                                        item.piece_in_package > 0 ? <div>
+                                                                            <div className={"priceWithout"}>
+                                                                                <p>Цена : </p> <h2 className="cashMenu_block_price">{item.price} <span className={spanX}>c</span></h2>
+                                                                            </div>
+                                                                            <div className={"priceWithout"}>
+                                                                                <p>Цена шт : </p> <h2 className="cashMenu_block_price">{item.piece_price} <span className={spanX}>c</span></h2>
+                                                                            </div>
+                                                                        </div> : <></>
+                                                                    }
+                                                                </div>
                                                                 {
                                                                     item.discount_sum ? <div>
                                                                         <div className={"priceWithoutDiscount"}>
-                                                                            <div className={"priceWithout"}>
-                                                                                <p>Упаковка :</p> <p
-                                                                                className="cashMenu_block_price">{item.number_packages < 0 ? 0 : item.number_packages}</p>
-                                                                            </div>
-                                                                            <div>
-                                                                                {
-                                                                                    item.piece_in_package > 0 ? <div>
-                                                                                        {
-                                                                                            item.piece_quantity > 0 ? <div className={"priceWithout"}>
-                                                                                                <p>Штук (В упаковке) ostalos : </p>
-                                                                                                <p className="cashMenu_block_price">{item.piece_quantity}</p>
-                                                                                            </div> : <></>
-                                                                                        }
-                                                                                        <div className={"priceWithout"}>
-                                                                                            <p>Штук (В упаковке) : </p>
-                                                                                            <p className="cashMenu_block_price">{item.piece_in_package}</p>
-                                                                                        </div>
-                                                                                        <div className={"priceWithout"}>
-                                                                                            <p>Штук Price :</p> <p
-                                                                                            className="cashMenu_block_price">{item.piece_price}</p>
-                                                                                        </div>
-                                                                                    </div> : <></>
-                                                                                }
-                                                                            </div>
-                                                                            <p className="priceWithoutDiscount_price">
-                                                                                Цена
-                                                                                : <span>{item.price_without_discount}</span>
-                                                                            </p>
                                                                             <p className="priceWithoutDiscount_discount">
                                                                                 Cкидка
-                                                                                : <span>{item.discount_sum}</span>
+                                                                                : <span>{item.discount_sum} <span> c</span></span>
                                                                             </p>
-                                                                        </div>
-                                                                        <div className={"priceWithoutBlock"}>
-                                                                            <div className={"priceWithout"}>
-                                                                                <p>Cтоимость :</p> <p
-                                                                                className="cashMenu_block_price"><span
-                                                                                className={spanX}>с</span>{item.price}
-                                                                            </p>
+                                                                            <div className={"priceWithoutBlock"}>
+                                                                                <div className={"priceWithout"}>
+                                                                                    <p>Цена со <span>скидкой</span>:</p> <h2 className="cashMenu_block_price">{item.price} <span className={spanX}>c</span></h2>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
-                                                                    </div> : <div className={"priceWithoutBlock"}>
-                                                                        <div className={"priceWithout"}>
-                                                                            <p>Упаковка :</p> <p
-                                                                            className="cashMenu_block_price">{item.number_packages}</p>
-                                                                        </div>
-                                                                        <div>
-                                                                            {
-                                                                                item.piece_in_package > 0 ? <div>
-                                                                                    {
-                                                                                        item.piece_quantity > 0 ? <div className={"priceWithout"}>
-                                                                                            <p>Штук (В упаковке) ostalos : </p>
-                                                                                            <p className="cashMenu_block_price">{item.piece_quantity}</p>
-                                                                                        </div> : <></>
-                                                                                    }
-                                                                                    <div className={"priceWithout"}>
-                                                                                        <p>Штук (В упаковке) :</p> <p
-                                                                                        className="cashMenu_block_price">{item.piece_in_package}</p>
-                                                                                    </div>
-                                                                                    <div className={"priceWithout"}>
-                                                                                        <p>Штук Price :</p> <p
-                                                                                        className="cashMenu_block_price">{item.piece_price}</p>
-                                                                                    </div>
-                                                                                </div> : <></>
-                                                                            }
-                                                                        </div>
-                                                                        <div className={"priceWithout"}>
-                                                                            <p>Cтоимость :</p> <p
-                                                                            className="cashMenu_block_price"><span
-                                                                            className={spanX}>с</span>{item.price}</p>
-                                                                        </div>
-                                                                    </div>
+                                                                    </div> : <></>
                                                                 }
                                                             </div>
                                                         </div>
                                                         <div className="cashMenu_block_button">
+                                                            <button className={"cashMenu_block_button_analog"} onClick={()=>Analogue(item.id)}>Аналоги</button>
                                                             <button onClick={() => dispatch({
                                                                 type: ADD_CART,
                                                                 payload: item

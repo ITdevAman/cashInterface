@@ -41,7 +41,7 @@ const shopReducer = (state = initialState, action) => {
                 findProduct.count++
                 return {...state, cart : state.cart.map(el => el.id === findProduct.id ? findProduct : el)}
             } else {
-                return {...state,cart : [...state.cart, {...action.payload, count: 0,countPiece : 0}]}
+                return {...state,cart : [...state.cart, {...action.payload, count: 1,countPiece : 0}]}
             }
         case REMOVE_CART :
             return {...state, cart: state.cart.filter((el) => el.id !== action.item.id)}
@@ -49,7 +49,8 @@ const shopReducer = (state = initialState, action) => {
             const removeProduct = state.cart.find(el => el.id === action.id)
             removeProduct.count--
             if (removeProduct.count === 0) {
-                return {...state, cart: state.cart.filter(el => el.id !== removeProduct.id)}
+                removeProduct.count = 0
+                return {...state, cart: state.cart.map(el => el.id === removeProduct.id ? removeProduct : el)}
             }
             return {...state, cart: state.cart.map(el => el.id === removeProduct.id ? removeProduct : el)}
         case GET_BASED:

@@ -537,6 +537,7 @@ const Cash = () => {
         inputData[s.target.id] = s.target.value
         setState(inputData)
     }
+
     const Pay = (e) => {
         e.preventDefault()
         {
@@ -544,6 +545,8 @@ const Cash = () => {
                     "products":
                         cart.map((el) => {
                                 const totalSum = el.count * el.price
+                            console.log(totalSum)
+                            console.log(totalPrice)
                                 return {
                                     "name": `${el.name}`,
                                     "price": Math.floor(el.price),
@@ -556,7 +559,7 @@ const Cash = () => {
                                 }
                             },
                         ),
-                    "sum_product": totalPrice,
+                    "sum_product": Math.floor(totalPrice),
                     "money_received": client,
                     "change": Math.floor(cashValue),
                     "operation_type": "cash",
@@ -613,6 +616,7 @@ const Cash = () => {
       return document.location.reload()
     }
     //////
+
     return (
         <div>
             <div className={Alert}>
@@ -746,15 +750,9 @@ const Cash = () => {
                                                             item.piece_in_package > 0 ? <div className={"cartDeleteQuantity"}>
                                                                 <div className={"cartDeleteQuantity_block"}>
                                                                     <p>Kоличество штук</p>
-                                                                    {
-                                                                        countInputValue > item.countPiece ? <></> : <h5>Всего {countInputValue} товаров</h5>
-                                                                    }
                                                                 </div>
                                                                 <input className={"cartInput1"} placeholder={"0"}
-                                                                       id={"quantity"} onChange={s => dispatch({
-                                                                    type: GET_BASED_PIECE,
-                                                                    payload: {id: item.id, count: s.target.value}
-                                                                })} type="number"/>
+                                                                       id={"quantity"} onChange={(s) => dispatch({type:GET_BASED_PIECE, payload: {id: item.id, count: s.target.value}})} type="number"/>
                                                             </div> : <></>
                                                         }
                                                     </div>
