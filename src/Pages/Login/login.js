@@ -22,7 +22,6 @@ const Form = css`
     display: flex;
     justify-content: center;
     align-items: center;
-
     & img {
       position: absolute;
       z-index: -1;
@@ -39,6 +38,14 @@ const Form = css`
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      & p{
+        font-weight: 300;
+        font-size: 16px;
+        color: red;
+        left: 17%;
+        top: -13%;
+        position: absolute;
+      }
 
       .form_input {
         width: 70%;
@@ -47,31 +54,28 @@ const Form = css`
         border-radius: 10px;
         font-size: 18px;
         font-weight: 400;
-        border: 1px solid #77402F;
-        background: transparent;
+        background: #FFFFFF;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
+        border: none;
         outline: none;
         &:focus {
-          background: rgba(119, 64, 47, 0.93);
-          backdrop-filter: blur(5px);
-          color: white;
+          color: black;
+          border: 1px solid #282F3A;
         }
       }
 
       .form_btn {
-        width: 50%;
+        width: 40%;
         padding: 10px;
         margin: 10px 0;
-        background: transparent;
-        font-size: 18px;
+        font-size: 20px;
         font-weight: 500;
         border-radius: 10px;
-        border: 1px solid #77402F;
+        border: none;
         transition: .3s;
-
-        &:hover {
-          background: #77402F;
-          color: white;
-        }
+        background: #86B9F4;
+        color: white;
+        
       }
     }
   }
@@ -89,7 +93,7 @@ const Login = () => {
         setData(newData)
     }
     const dispatch = useDispatch()
-
+    const [err , setErr] = useState("")
     function submit (e){
         e.preventDefault()
         return  axios.post("https://s225912.hostiman.com/api/token/",
@@ -102,13 +106,18 @@ const Login = () => {
                 localStorage.setItem('token', JSON.stringify(res.data))
                 document.location.reload()
             })
-            .catch(err=> {console.log(err)})
+            .catch(res=> {
+                setErr("Введите правильный email или пароль.")
+                console.log(res)
+            })
     }
+
     return (
         <div className={Form}>
             <div className="form">
                 <img src={logo} alt=""/>
                 <form className={"form_block"}>
+                    <p>{err}</p>
                     <input className={"form_input"} onChange={(e) => handle(e)} id={"email"} value={data.email} type="text" placeholder={"Enter your E-mail"}/>
                     <input className={"form_input"}  onChange={(e) => handle(e)} id={"password"} value={data.password} type="password" placeholder={"Enter your password"}/>
                     <button className={"form_btn"}  onClick={submit}>login</button>

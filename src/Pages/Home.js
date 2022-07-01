@@ -13,6 +13,7 @@ const cashBlock = css`
   position: relative;
   background: #F9F9FB;
   padding: 20px 30px;
+
   .cashBlockSeach {
     display: flex;
     justify-content: space-between;
@@ -57,6 +58,7 @@ const cashBlock = css`
       border: 1px solid #C7C7C7;
       text-align: center;
       transition: .4s;
+
       &:hover {
         background: #F5EFEF;
         border: 1px solid #805E5A;
@@ -164,52 +166,63 @@ const cashBlock = css`
       transition: .4s;
       margin: 16px auto;
       position: relative;
-      .cashMenu_block_piece{
-        &_btn{
+
+      .cashMenu_block_piece {
+        &_btn {
           position: absolute;
-          width: 50px;
-          height: 50px;
-          border:none;
-          color: white;
-          background: #77402F;
-          border-radius: 10px;
-          right: 0;
-          top: -25px;
-          
+          width: 40px;
+          height: 40px;
+          border: none;
+          color: #5699E8;
+          font-size: 18px;
+          right: 2%;
+          background: #FFFFFF;
+          box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.25), inset 0px 3px 4px rgba(0, 0, 0, 0.25);
+          border-radius: 50%;
+          top: 3%;
+
         }
+
         &:hover .cashMenu_block_request {
-           opacity: 1;
-          transform: scaleY(1);
+          opacity: 1;
+          transform: scaleX(1);
         }
-        .cashMenu_block_request{
+
+        .cashMenu_block_request {
           transition: .3s;
-          transform: scaleY(0);
+          transform: scaleX(0);
           position: absolute;
           z-index: 33;
-          width: 90%;
+          width: 150px;
+          top: 3%;
+          right: -36%;
           opacity: 0;
-          background: #77402F;
+          background: #59CC13;
           border-radius: 10px;
-          border:none;
+          border: none;
           color: white;
           font-weight: 600;
           font-size: 18px;
-          padding: 10px;
+          padding: 6px 10px;
         }
       }
+
       .priceWithout {
         display: flex;
         align-items: center;
+
         & h2 {
           font-size: 16px;
           font-weight: bold;
           line-height: 16px;
         }
+
         & p {
           font-weight: 500;
           line-height: 16px;
           color: #939393;
-          & span{
+
+          & span {
             color: red;
           }
         }
@@ -217,12 +230,12 @@ const cashBlock = css`
 
       &_img {
         width: 100%;
-        height: 200px;
+        height: 170px;
         position: relative;
         overflow: hidden;
-        border: 1px solid #EAEAEA;
         border-radius: 10px;
-        padding:20px 3px ;
+        padding: 20px 3px;
+
         & img {
           width: 100%;
           height: 100%;
@@ -239,6 +252,7 @@ const cashBlock = css`
         line-height: 20px;
         color: #282F3A;
       }
+
       &_price {
         margin-top: -4%;
         margin-left: 18px;
@@ -246,30 +260,36 @@ const cashBlock = css`
         font-weight: bold;
         color: black;
       }
+
       .priceWithoutDiscount {
         .priceWithout {
           display: flex;
           align-items: center;
+
           & p {
             font-weight: 500;
             line-height: 14px;
             color: #939393;
-            & span{
+
+            & span {
               color: red;
             }
           }
         }
+
         &_discount {
           font-size: 16px;
           font-weight: 500;
           color: #939393;
           line-height: 14px;
+
           & span {
             font-weight: 600;
             color: black;
           }
         }
       }
+
       .priceWithoutBlock {
         margin-top: 10%;
       }
@@ -338,7 +358,8 @@ const cashBlock = css`
         margin-top: 5px;
         display: flex;
         justify-content: space-between;
-        &_analog{
+
+        &_analog {
           padding: 13px 16px;
           transition: .5s;
           display: flex;
@@ -351,6 +372,7 @@ const cashBlock = css`
           color: white;
           background: #5699E8;
         }
+
         &_btn {
           padding: 13px 16px;
           transition: .5s;
@@ -362,7 +384,7 @@ const cashBlock = css`
           font-weight: 900;
           border-radius: 15px;
           color: white;
-          background: #689240;
+          background: #4ead14;
         }
       }
     }
@@ -395,7 +417,8 @@ const ModalBlock = css`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-
+  z-index: 99;
+  position: relative;
   & input {
     width: 75%;
     padding: 7px 10px;
@@ -435,14 +458,112 @@ const ModalBlock = css`
     }
   }
 `
+const Discount = css`
+  background: #F30D28;
+  border-radius: 10px 0;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: 7px 12px;
+  color: white;
+`
+const AnaloguePage = css`
+  position: relative;
+  width: 100%;
+  height: 400px;
+  padding-top: 5%;
+  overflow: scroll;
+  padding-right: 10px;
+  .AnaloguePageBtn{
+    background: transparent;
+    border: none;
+    width: 100%;
+    position: relative;
+  }
+  .AnaloguePage_block {
+    width: 100%;
+    border: 0.5px solid #EAEAEA;
+    padding: 20px 20px 25px 20px;
+    background: white;
+    transition: .4s;
+    position: relative;
+    .AnaloguePage_block_piece{
+      .AnaloguePage_block_request{
+        transition: .3s;
+        transform: scaleY(0);
+        position: absolute;
+        z-index: 33;
+        width: 90%;
+        opacity: 0;
+        background: #77402F;
+        border-radius: 10px;
+        border:none;
+        color: white;
+        font-weight: 600;
+        font-size: 18px;
+        padding: 10px;
+      }
+    }
+    &_img {
+      width: 100%;
+      height: 150px;
+      position: relative;
+      overflow: hidden;
+      border-radius: 10px;
+      & img {
+        width: 100%;
+        height: 100%;
+        object-fit:contain;
+      }
+    }
+    .AnaloguePage_block_title{
+      margin-top: 1px;
+      margin-bottom: 15px;
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 20px;
+      color: #282F3A;
+      text-align: start;
+    }
+    &_price {
+      margin-top: -4%;
+      margin-left: 18px;
+      font-size: 14px;
+      font-weight: 500;
+      color: black;
+    }
+    .priceWithout{
+      & p {
+        color: #939393;
+        font-size: 14px;
+        line-height: 14px;
+      }
+    }
+   
+  }
+
+`
+const AnaloguePageBtnX = css`
+    margin-top: 10px;
+  margin-left: 90%;
+  border: none;
+  background: transparent;
+  font-size: 24px;
+  font-weight: 250;
+`
 
 const Home = () => {
     const [card, setCard] = useState([])
     const [filterCategory, setFilterCategory] = useState([])
-    const [analogue , setAnalogue] = useState([])
+    const [analogue , setAnalogue] = useState({analogue : [] , id : 0})
     const [category, setCategory] = useState([])
     const dispatch = useDispatch()
-    const {token, is_active ,cart, tokenRefresh} = useSelector(store => store)
+    const {token, is_active , tokenRefresh} = useSelector(store => store)
     const [search, setSearch] = useState([card, filterCategory])
     const TokenRefresh = `${token.token.refresh}`
     let subtitle;
@@ -493,13 +614,13 @@ const Home = () => {
             .catch(err => console.log(err))
     }, [TokenRefresh])
     const Analogue = (ID) => {
-        axios.get(`https://s225912.hostiman.com/api/product/list/analogue/${ID}`, {
+        analogue.id > 0 ? setAnalogue([]) : axios.get(`https://s225912.hostiman.com/api/product/list/analogue/${ID}`, {
             headers: {
                 "Authorization": `Bearer ${tokenRefresh}`
             }
         })
             .then((res) => {
-                setAnalogue(res.data)
+                setAnalogue({analogue : res.data.analogues , id: res.data.id})
             })
     }
     const [sendApplication , setSendApplication] = useState('')
@@ -547,7 +668,7 @@ const Home = () => {
         }
         return setSearch(card)
     }
-    // 4700003531341 4700040114137 4700002136541
+    //
     const filter = ({name}) => {
         let valueFilter = name.toLowerCase()
         let result = []
@@ -555,6 +676,60 @@ const Home = () => {
             return el.category.toLowerCase().search(valueFilter) !== -1;
         })
         setSearch(result)
+    }
+
+
+    const AnalogPage = () => {
+        return (
+            <div>
+                <button className={AnaloguePageBtnX} onClick={()=>setAnalogue([])}>x</button>
+                <div className={AnaloguePage}>{
+                    analogue.analogue.map((item) => {
+                        return (
+                            <div>
+                                <button className={"AnaloguePageBtn"} onClick={() => dispatch({
+                                    type: ADD_CART,
+                                    payload: item
+                                })} id={item.id}>
+                                    <div className="AnaloguePage_block">
+                                        {
+                                            item.discount >0 ? <p className={Discount}>Скидка -{item.discount}%</p> : <></>
+                                        }
+                                        <div className="row">
+                                            <div className="col-lg-5">
+                                                <div className="AnaloguePage_block_img">
+                                                    <img src={item.image} alt=""/>
+                                                </div>
+                                            </div>
+                                            <div className="col-lg-7">
+                                                <h1 className="AnaloguePage_block_title">
+                                                    {item.name}
+                                                </h1>
+                                                <div className={"priceWithout"}>
+                                                    <p>Остаток :</p> <h6 className="AnaloguePage_block_price">{item.number_packages < 0 ? 0 : item.number_packages} уп. {item.piece_quantity > 0 ? item.piece_quantity : <></>} шт</h6>
+                                                </div>
+                                                <div>
+                                                    {
+                                                        item.piece_in_package > 0 ? <div>
+                                                            <div className={"priceWithout"}>
+                                                                <p>Цена : </p> <h2 className="AnaloguePage_block_price">{item.price} <span className={spanX}>c</span></h2>
+                                                            </div>
+                                                            <div className={"priceWithout"}>
+                                                                <p>Цена шт : </p> <h2 className="AnaloguePage_block_price">{item.piece_price} <span className={spanX}>c</span></h2>
+                                                            </div>
+                                                        </div> : <></>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </button>
+                            </div>
+                        )
+                    })
+                }</div>
+            </div>
+        )
     }
     return (
         <section id={"Home"}>
@@ -591,16 +766,18 @@ const Home = () => {
                                 !is_active ? <h4 className={isntActive}>Вы еще не начали работу !</h4> :
                                     <div className={"row"}>{
                                         search.map((item) => {
-                                            console.log(item)
                                             return (
                                                 <div className="col-lg-6" id={item.id}>
                                                     <div className="cashMenu_block">
+                                                        {
+                                                            item.discount >0 ? <p className={Discount}>Скидка -{item.discount}%</p> : <></>
+                                                        }
                                                         <div>
                                                             {item.piece_in_package < 1 ? <div className={"cashMenu_block_piece"}>
                                                                 <button className="cashMenu_block_piece_btn">
                                                                     {item.piece_in_package}
                                                                 </button>
-                                                                <button onClick={openModal} className={"cashMenu_block_request"}>Отправить заявку</button>
+                                                                <button onClick={openModal} className={"cashMenu_block_request"}>Запрос</button>
                                                                 <Modal
                                                                     isOpen={modalIsOpen}
                                                                     onAfterOpen={afterOpenModal}
@@ -645,21 +822,6 @@ const Home = () => {
                                                                         </div> : <></>
                                                                     }
                                                                 </div>
-                                                                {
-                                                                    item.discount_sum ? <div>
-                                                                        <div className={"priceWithoutDiscount"}>
-                                                                            <p className="priceWithoutDiscount_discount">
-                                                                                Cкидка
-                                                                                : <span>{item.discount_sum} <span> c</span></span>
-                                                                            </p>
-                                                                            <div className={"priceWithoutBlock"}>
-                                                                                <div className={"priceWithout"}>
-                                                                                    <p>Цена со <span>скидкой</span>:</p> <h2 className="cashMenu_block_price">{item.price} <span className={spanX}>c</span></h2>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div> : <></>
-                                                                }
                                                             </div>
                                                         </div>
                                                         <div className="cashMenu_block_button">
@@ -667,9 +829,14 @@ const Home = () => {
                                                             <button onClick={() => dispatch({
                                                                 type: ADD_CART,
                                                                 payload: item
-                                                            })} className="cashMenu_block_button_btn">Добавить в биллинг
+                                                            })} className="cashMenu_block_button_btn">Добавить в корзину
                                                             </button>
                                                         </div>
+                                                        {
+                                                            item.id === analogue.id ? <div>
+                                                                {analogue.analogue.length ? <AnalogPage/> : <></>}
+                                                            </div> : <></>
+                                                        }
                                                     </div>
                                                 </div>
                                             )

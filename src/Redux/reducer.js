@@ -48,8 +48,8 @@ const shopReducer = (state = initialState, action) => {
         case MIN_CART :
             const removeProduct = state.cart.find(el => el.id === action.id)
             removeProduct.count--
-            if (removeProduct.count === 0) {
-                removeProduct.count = 0
+            if (removeProduct.count === -1) {
+                removeProduct.count ++
                 return {...state, cart: state.cart.map(el => el.id === removeProduct.id ? removeProduct : el)}
             }
             return {...state, cart: state.cart.map(el => el.id === removeProduct.id ? removeProduct : el)}
