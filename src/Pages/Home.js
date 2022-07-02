@@ -786,7 +786,7 @@ const Home = () => {
                                                                     contentLabel="Example Modal"
                                                                 >
                                                                     <div className={ModalBlock}>
-                                                                        <h1>Вы хотите начать работy?</h1>
+                                                                        <h1>Вы хотите отправить вопрос?</h1>
                                                                         <input  id={'start'} onChange={(e)=>setSendApplication(e.target.value)}
                                                                                 type="number" placeholder={"Сумма на кассе"}/>
                                                                         <form>
