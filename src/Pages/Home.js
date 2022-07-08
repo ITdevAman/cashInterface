@@ -5,6 +5,7 @@ import axios from "axios"
 import {useDispatch, useSelector} from "react-redux";
 import {ADD_CART} from "../Redux/actions";
 import Modal from "react-modal";
+import Icon from "../Assets/Icon.png"
 
 
 const cashBlock = css`
@@ -170,40 +171,43 @@ const cashBlock = css`
       .cashMenu_block_piece {
         &_btn {
           position: absolute;
-          width: 40px;
-          height: 40px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 35px;
+          height: 35px;
           border: none;
           color: #5699E8;
+          background: red;
           font-size: 18px;
           right: 2%;
-          background: #FFFFFF;
-          box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.25), inset 0px 3px 4px rgba(0, 0, 0, 0.25);
-          border-radius: 50%;
+          border-radius: 10px;
           top: 3%;
-
+          & img {
+            width: 65%;
+            height: 65%;
+            object-fit: contain;
+          }
         }
 
         &:hover .cashMenu_block_request {
           opacity: 1;
-          transform: scaleX(1);
-        }
-
+\        }
         .cashMenu_block_request {
-          transition: .3s;
-          transform: scaleX(0);
+          transition: .5s;
           position: absolute;
-          z-index: 33;
           width: 150px;
           top: 3%;
+          z-index: 1;
           right: -36%;
           opacity: 0;
-          background: #59CC13;
+          background: red;
           border-radius: 10px;
           border: none;
           color: white;
           font-weight: 600;
           font-size: 18px;
-          padding: 6px 10px;
+          padding: 4px 10px;
         }
       }
 
@@ -371,6 +375,24 @@ const cashBlock = css`
           border-radius: 15px;
           color: white;
           background: #5699E8;
+          &:focus {
+            color: rgba(255, 255, 255, 0.73);
+            background: #9CC9FF;
+          }
+        }
+
+        &_analogX {
+          padding: 13px 16px;
+          transition: .5s;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 17px;
+          border: none;
+          font-weight: 900;
+          border-radius: 15px;
+          color: rgba(255, 255, 255, 0.73);
+          background: #9CC9FF;
         }
 
         &_btn {
@@ -411,21 +433,20 @@ const customStyles = {
     },
 };
 const ModalBlock = css`
+  position: relative;
+  z-index: 99;
   width: 500px;
   padding: 30px;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  z-index: 99;
-  position: relative;
   & input {
     width: 75%;
     padding: 7px 10px;
     margin: 20px 0;
     outline: none;
   }
-
   & h1 {
     display: flex;
     font-size: 22px;
@@ -473,80 +494,164 @@ const Discount = css`
   color: white;
 `
 const AnaloguePage = css`
-  position: relative;
-  width: 100%;
-  height: 400px;
-  padding-top: 5%;
-  overflow: scroll;
-  padding-right: 10px;
-  .AnaloguePageBtn{
-    background: transparent;
-    border: none;
-    width: 100%;
-    position: relative;
-  }
-  .AnaloguePage_block {
-    width: 100%;
-    border: 0.5px solid #EAEAEA;
-    padding: 20px 20px 25px 20px;
-    background: white;
-    transition: .4s;
-    position: relative;
-    .AnaloguePage_block_piece{
-      .AnaloguePage_block_request{
-        transition: .3s;
-        transform: scaleY(0);
-        position: absolute;
-        z-index: 33;
-        width: 90%;
-        opacity: 0;
-        background: #77402F;
-        border-radius: 10px;
-        border:none;
-        color: white;
-        font-weight: 600;
-        font-size: 18px;
-        padding: 10px;
-      }
+  animation: n .8s alternate;
+  @keyframes n {
+    0% {
+      opacity: 0;
+      transform: translateY(-200px);
     }
-    &_img {
+    100% {
+      opacity: 1;
+      transform:  translateY(0);
+    }
+  }
+  .AnaloguePage{
+    position: relative;
+    width: 100%;
+    padding-top: 5%;
+    overflow: scroll;
+    padding-right: 10px;
+    .AnaloguePageBtn{
+      background: transparent;
+      border: none;
       width: 100%;
-      height: 150px;
       position: relative;
-      overflow: hidden;
-      border-radius: 10px;
-      & img {
+    }
+    .AnaloguePage_block {
+      width: 100%;
+      border: 0.5px solid #EAEAEA;
+      padding: 20px 20px 25px 20px;
+      background: white;
+      transition: .4s;
+      position: relative;
+      .AnaloguePage_block_piece{
+        .AnaloguePage_block_request{
+          transition: .3s;
+          transform: scaleY(0);
+          position: absolute;
+          z-index: 33;
+          width: 90%;
+          opacity: 0;
+          background: #77402F;
+          border-radius: 10px;
+          border:none;
+          color: white;
+          font-weight: 600;
+          font-size: 18px;
+          padding: 10px;
+        }
+      }
+      &_img {
         width: 100%;
-        height: 100%;
-        object-fit:contain;
+        height: 150px;
+        position: relative;
+        overflow: hidden;
+        border-radius: 10px;
+        & img {
+          width: 100%;
+          height: 100%;
+          object-fit:contain;
+        }
       }
-    }
-    .AnaloguePage_block_title{
-      margin-top: 1px;
-      margin-bottom: 15px;
-      font-weight: 700;
-      font-size: 16px;
-      line-height: 20px;
-      color: #282F3A;
-      text-align: start;
-    }
-    &_price {
-      margin-top: -4%;
-      margin-left: 18px;
-      font-size: 14px;
-      font-weight: 500;
-      color: black;
-    }
-    .priceWithout{
-      & p {
-        color: #939393;
+      .AnaloguePage_block_title{
+        margin-top: 1px;
+        margin-bottom: 15px;
+        font-weight: 700;
+        font-size: 16px;
+        line-height: 20px;
+        color: #282F3A;
+        text-align: start;
+      }
+      &_price {
+        margin-top: -4%;
+        margin-left: 18px;
         font-size: 14px;
-        line-height: 14px;
+        font-weight: 500;
+        color: black;
+      }
+      .priceWithout{
+        & p {
+          color: #939393;
+          font-size: 14px;
+          line-height: 14px;
+        }
       }
     }
-   
   }
-
+  .AnaloguePage2{
+    position: relative;
+    width: 100%;
+    height: 400px;
+    padding-top: 5%;
+    overflow: scroll;
+    padding-right: 10px;
+    .AnaloguePageBtn{
+      background: transparent;
+      border: none;
+      width: 100%;
+      position: relative;
+    }
+    .AnaloguePage_block {
+      width: 100%;
+      border: 0.5px solid #EAEAEA;
+      padding: 20px 20px 25px 20px;
+      background: white;
+      transition: .4s;
+      position: relative;
+      .AnaloguePage_block_piece{
+        .AnaloguePage_block_request{
+          transition: .3s;
+          transform: scaleY(0);
+          position: absolute;
+          z-index: 33;
+          width: 90%;
+          opacity: 0;
+          background: #77402F;
+          border-radius: 10px;
+          border:none;
+          color: white;
+          font-weight: 600;
+          font-size: 18px;
+          padding: 10px;
+        }
+      }
+      &_img {
+        width: 100%;
+        height: 150px;
+        position: relative;
+        overflow: hidden;
+        border-radius: 10px;
+        & img {
+          width: 100%;
+          height: 100%;
+          object-fit:contain;
+        }
+      }
+      .AnaloguePage_block_title{
+        margin-top: 1px;
+        margin-bottom: 15px;
+        font-weight: 700;
+        font-size: 16px;
+        line-height: 20px;
+        color: #282F3A;
+        text-align: start;
+      }
+      &_price {
+        margin-top: -4%;
+        margin-left: 18px;
+        font-size: 14px;
+        font-weight: 500;
+        color: black;
+      }
+      .priceWithout{
+        & p {
+          color: #939393;
+          font-size: 14px;
+          line-height: 14px;
+        }
+      }
+    }
+  }
 `
 const AnaloguePageBtnX = css`
     margin-top: 10px;
@@ -613,16 +718,6 @@ const Home = () => {
             })
             .catch(err => console.log(err))
     }, [TokenRefresh])
-    const Analogue = (ID) => {
-        analogue.id > 0 ? setAnalogue([]) : axios.get(`https://s225912.hostiman.com/api/product/list/analogue/${ID}`, {
-            headers: {
-                "Authorization": `Bearer ${tokenRefresh}`
-            }
-        })
-            .then((res) => {
-                setAnalogue({analogue : res.data.analogues , id: res.data.id})
-            })
-    }
     const [sendApplication , setSendApplication] = useState('')
     const SendAnApplication = (ID) => {
       axios.post("https://s225912.hostiman.com/api/product/inquiry/create/", {
@@ -677,57 +772,75 @@ const Home = () => {
         })
         setSearch(result)
     }
-
-
+    const Analogue = (ID) => {
+        analogue.id > 0 ? setAnalogue([]) : axios.get(`https://s225912.hostiman.com/api/product/list/analogue/${ID}`, {
+            headers: {
+                "Authorization": `Bearer ${tokenRefresh}`
+            }
+        })
+            .then((res) => {
+                const btn = document.querySelector(".cashMenu_block_button_analog")
+                btn.style.bgColor = "red"
+                return setAnalogue({analogue : res.data.analogues , id: res.data.id})
+            })
+    }
+    const AnalogX = () => {
+        setAnalogue([])
+    }
     const AnalogPage = () => {
         return (
             <div>
-                <button className={AnaloguePageBtnX} onClick={()=>setAnalogue([])}>x</button>
-                <div className={AnaloguePage}>{
-                    analogue.analogue.map((item) => {
-                        return (
-                            <div>
-                                <button className={"AnaloguePageBtn"} onClick={() => dispatch({
-                                    type: ADD_CART,
-                                    payload: item
-                                })} id={item.id}>
-                                    <div className="AnaloguePage_block">
-                                        {
-                                            item.discount >0 ? <p className={Discount}>Скидка -{item.discount}%</p> : <></>
-                                        }
-                                        <div className="row">
-                                            <div className="col-lg-5">
-                                                <div className="AnaloguePage_block_img">
-                                                    <img src={item.image} alt=""/>
+                <hr/>
+                <button className={AnaloguePageBtnX} onClick={AnalogX}>x</button>
+                <div className={AnaloguePage}>
+                    <div className={analogue.analogue.length > 1 ? "AnaloguePage2" : "AnaloguePage"}>
+                        {
+                            analogue.analogue.map((item) => {
+                                return (
+                                    <div>
+                                        <button className={"AnaloguePageBtn"} onClick={() => dispatch({
+                                            type: ADD_CART,
+                                            payload: item
+                                        })} id={item.id}>
+                                            <div className="AnaloguePage_block">
+                                                {
+                                                    item.discount >0 ? <p className={Discount}>Скидка -{item.discount}%</p> : <></>
+                                                }
+                                                <div className="row">
+                                                    <div className="col-lg-5">
+                                                        <div className="AnaloguePage_block_img">
+                                                            <img src={item.image} alt=""/>
+                                                        </div>
+                                                    </div>
+                                                    <div className="col-lg-7">
+                                                        <h1 className="AnaloguePage_block_title">
+                                                            {item.name}
+                                                        </h1>
+                                                        <div className={"priceWithout"}>
+                                                            <p>Остаток :</p> <h6 className="AnaloguePage_block_price">{item.number_packages < 0 ? 0 : item.number_packages} уп. {item.piece_quantity > 0 ? item.piece_quantity : <></>} шт</h6>
+                                                        </div>
+                                                        <div>
+                                                            {
+                                                                item.piece_in_package > 0 ? <div>
+                                                                    <div className={"priceWithout"}>
+                                                                        <p>Цена : </p> <h2 className="AnaloguePage_block_price">{item.price} <span className={spanX}>c</span></h2>
+                                                                    </div>
+                                                                    <div className={"priceWithout"}>
+                                                                        <p>Цена шт : </p> <h2 className="AnaloguePage_block_price">{item.piece_price} <span className={spanX}>c</span></h2>
+                                                                    </div>
+                                                                </div> : <></>
+                                                            }
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div className="col-lg-7">
-                                                <h1 className="AnaloguePage_block_title">
-                                                    {item.name}
-                                                </h1>
-                                                <div className={"priceWithout"}>
-                                                    <p>Остаток :</p> <h6 className="AnaloguePage_block_price">{item.number_packages < 0 ? 0 : item.number_packages} уп. {item.piece_quantity > 0 ? item.piece_quantity : <></>} шт</h6>
-                                                </div>
-                                                <div>
-                                                    {
-                                                        item.piece_in_package > 0 ? <div>
-                                                            <div className={"priceWithout"}>
-                                                                <p>Цена : </p> <h2 className="AnaloguePage_block_price">{item.price} <span className={spanX}>c</span></h2>
-                                                            </div>
-                                                            <div className={"priceWithout"}>
-                                                                <p>Цена шт : </p> <h2 className="AnaloguePage_block_price">{item.piece_price} <span className={spanX}>c</span></h2>
-                                                            </div>
-                                                        </div> : <></>
-                                                    }
-                                                </div>
-                                            </div>
-                                        </div>
+                                        </button>
                                     </div>
-                                </button>
-                            </div>
-                        )
-                    })
-                }</div>
+                                )
+                            })
+                        }
+                    </div>
+                </div>
             </div>
         )
     }
@@ -773,22 +886,22 @@ const Home = () => {
                                                             item.discount >0 ? <p className={Discount}>Скидка -{item.discount}%</p> : <></>
                                                         }
                                                         <div>
-                                                            {item.piece_in_package < 1 ? <div className={"cashMenu_block_piece"}>
-                                                                <button className="cashMenu_block_piece_btn">
-                                                                    {item.piece_in_package}
+                                                            {item.number_packages < 1 ? <div className={"cashMenu_block_piece"}>
+                                                                <button onClick={openModal} className="cashMenu_block_piece_btn">
+                                                                    <img src={Icon} alt=""/>
                                                                 </button>
-                                                                <button onClick={openModal} className={"cashMenu_block_request"}>Запрос</button>
+                                                                {/*<button  className={"cashMenu_block_request"}>Запрос</button>*/}
                                                                 <Modal
                                                                     isOpen={modalIsOpen}
                                                                     onAfterOpen={afterOpenModal}
                                                                     onRequestClose={closeModal}
                                                                     style={customStyles}
-                                                                    contentLabel="Example Modal"
+                                                                    contentLabel="Example Modal"ч
                                                                 >
                                                                     <div className={ModalBlock}>
-                                                                        <h1>Вы хотите отправить вопрос?</h1>
+                                                                        <h1>Вы хотите отправитьзопрос ?</h1>
                                                                         <input  id={'start'} onChange={(e)=>setSendApplication(e.target.value)}
-                                                                                type="number" placeholder={"Сумма на кассе"}/>
+                                                                                type="number" placeholder={"Kоличество"}/>
                                                                         <form>
                                                                             <button className={"btn_close"} onClick={closeModal}>Отмена</button>
                                                                             <button className={"btn_click"} onClick={()=>SendAnApplication(item.id)}>Да</button>
@@ -808,7 +921,7 @@ const Home = () => {
                                                                     {item.name}
                                                                 </h1>
                                                                 <div className={"priceWithout"}>
-                                                                    <p>Остаток :</p> <h6 className="cashMenu_block_price">{item.number_packages < 0 ? 0 : item.number_packages} уп. {item.piece_quantity > 0 ? item.piece_quantity : <></>} шт</h6>
+                                                                    <p>Остаток :</p> <h6 className="cashMenu_block_price">{item.number_packages} уп. {item.piece_quantity > 0 ? item.piece_quantity : <></>} шт</h6>
                                                                 </div>
                                                                 <div>
                                                                     {
@@ -825,7 +938,7 @@ const Home = () => {
                                                             </div>
                                                         </div>
                                                         <div className="cashMenu_block_button">
-                                                            <button className={"cashMenu_block_button_analog"} onClick={()=>Analogue(item.id)}>Аналоги</button>
+                                                            { item.analogues_count < 1 ? <button className={"cashMenu_block_button_analogX"}>Аналоги</button> :  <button className={"cashMenu_block_button_analog"} onClick={()=>Analogue(item.id)}>Аналоги</button>}
                                                             <button onClick={() => dispatch({
                                                                 type: ADD_CART,
                                                                 payload: item

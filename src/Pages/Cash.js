@@ -109,7 +109,7 @@ const cashBasket = css`
           display: flex;
           align-items: center;
           &_img {
-            width: 65px;
+            width: 20%;
             height: 75px;
             position: relative;
             border-radius: 10px;
@@ -123,13 +123,19 @@ const cashBasket = css`
             }
           }
           &_name {
+            width: 80%;
             padding-left: 10px;
+            &_block{
+              width: 100%;
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+            }
             & p {
-              margin-top: 10px;
               color: #a4a4a4;
               font-size: 14px;
               font-weight: 600;
-              line-height: 15px;
+              line-height: 14px;
             }
             & h3 {
               color: #a4a4a4;
@@ -137,10 +143,10 @@ const cashBasket = css`
               font-weight: 700;
               margin-left: 20px;
             }
-
             & h1 {
               font-size: 15px;
               font-weight : 700;
+              margin-bottom: 10px;
             }
           }
         }
@@ -263,11 +269,6 @@ const spanDiscount = css`
     background: #939393;
     top: 50%;
   }
-`
-const Discount = css`
-  font-weight: bold;
-  font-size: 14px;
-  margin: 15px;
 `
 const cashTotal = css`
   .cash_total {
@@ -446,13 +447,12 @@ const Alert = css`
     border-radius: 5px;
     background: red;
     position: absolute;
-    margin-left: -30%;
+    margin-left: -36%;
     margin-top: -100px;
     z-index: 99;
   }
-
   .animation {
-    animation: alert 2s ease alternate;
+    animation: alert 2s ease 1;
     @keyframes alert {
       0%, 100% {
         margin-top: -100px;
@@ -488,11 +488,9 @@ const Restart = css`
   border: none;
 `
 
-
 const Cash = () => {
     const dispatch = useDispatch()
-    const {cart, token, is_active, getInfo, check ,tokenRefresh} = useSelector(store => store)
-    const checkData = check[1]
+    const {cart, token, is_active, getInfo,tokenRefresh} = useSelector(store => store)
 
     //modal
     let subtitle;
@@ -542,6 +540,7 @@ const Cash = () => {
     //post
     const [state, setState] = useState({start: "", end: ""})
     const [pay , setPay] = useState(false)
+    const [animation , setAnimation] = useState('')
     const inputValue = (s) => {
         const inputData = {...state};
         inputData[s.target.id] = s.target.value
@@ -599,7 +598,8 @@ const Cash = () => {
             .then((res) => {
                 localStorage.setItem('is_active', JSON.stringify(res.data.is_active))
                 closeModal()
-                document.location.reload()
+                setAnimation("animation")
+                setTimeout(()=>document.location.reload() ,1000)
             })
             .catch(err => console.log(err))
     }
@@ -616,7 +616,8 @@ const Cash = () => {
             .then((res) => {
                 localStorage.setItem('is_active', JSON.stringify(res.data.is_active))
                 closeModal()
-                document.location.reload()
+                setAnimation("animation")
+                setTimeout(()=>document.location.reload() ,1000)
             })
             .catch(err => console.log(err.message))
     }
@@ -628,10 +629,10 @@ const Cash = () => {
     return (
         <div>
             <div className={Alert}>
-                {is_active ? <p className={"success animation"}>
-                    Вы успешно начали работу
-                </p> : <p className={"finished animation"}>
+                {is_active === true ?  <p className={`finished ${animation}`}>
                     Вы успешно завершили работу
+                </p>:<p className={`success ${animation}`}>
+                    Вы успешно начали работу
                 </p>}
             </div>
             <div className={cashBasket}>
@@ -710,25 +711,31 @@ const Cash = () => {
                                                     </div>
                                                     <div className="basket_block_cart_block_name">
                                                         <h1>{item.name}</h1>
-                                                        <p>Упаковка : <span className={span}> {item.count} уп.  [ {item.price_without_discount}сом ]</span></p>
-                                                        <div>
-                                                            {item.piece_in_package > 0 ? <div><p className={"basket_block_cart_block_name_desc"}>Штук : <span className={span}> {item.countPiece} шт.  [ {item.piece_price}сом ]</span></p></div> : <></>}
+                                                        <div className={"basket_block_cart_block_name_block"}>
+                                                            <p>Упаковка : <span className={span}> {item.count} уп.  [ {item.price_without_discount}сом ]</span></p><h3><span className={spanX}>C</span>{Math.floor(item.price_without_discount*item.count)}</h3>
                                                         </div>
-                                                        {
-                                                            item.discount_sum > 0 ? <div>
-                                                                {item.piece_in_package > 0 ? <div><p className={"basket_block_cart_block_name_desc"}>Скидка : <span className={spanDiscount}>{item.price} c</span></p></div> : <></>}
-                                                            </div> : <></>
-                                                        }
+                                                        <div className={"basket_block_cart_block_name_block"}>
+                                                            <div>
+                                                                {item.piece_in_package > 0 ? <div><p className={"basket_block_cart_block_name_desc"}>Штук : <span className={span}> {item.countPiece} шт.  [ {item.piece_price}сом ]</span></p></div> : <></>}
+                                                            </div>
+                                                            <div>
+                                                                {
+                                                                    item.piece_in_package > 0 ? <div><h3><span className={spanX}>C</span>{Math.floor(item.piece_price) * item.countPiece}</h3></div> : <></>
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                        <div className={"basket_block_cart_block_name_block"}>
+                                                            {
+                                                                item.discount_sum > 0 ? <div>
+                                                                    {item.piece_in_package > 0 ? <div><p className={"basket_block_cart_block_name_desc"}>Скидка : <span className={spanDiscount}>{item.price_without_discount} c</span></p></div> : <></>}
+                                                                </div> : <></>
+                                                            }
+                                                            {
+                                                                item.discount_sum > 0 ? <div><h3><span className={spanX}>C</span>{Math.floor(item.price) * item.count}</h3></div> : <></>
+                                                            }
+                                                        </div>
+
                                                     </div>
-                                                </div>
-                                                <div className="basket_block_cart_block_name">
-                                                    <h3><span className={spanX}>C</span>{Math.floor(item.price_without_discount*item.count)}</h3>
-                                                    {
-                                                        item.piece_in_package > 0 ? <div><h3><span className={spanX}>C</span>{Math.floor(item.piece_price) * item.countPiece}</h3></div> : <></>
-                                                    }
-                                                    {
-                                                        item.discount_sum > 0 ? <div><h3><span className={spanX}>C</span>{Math.floor(item.price) * item.count}</h3></div> : <></>
-                                                    }
                                                 </div>
                                             </div>
                                             <div className={"cartDelete"}>

@@ -5,7 +5,6 @@ import {GET_PERSON} from "../../Redux/actions";
 import {css} from "@emotion/css";
 import logo from "../../Assets/images/Снимок экрана 2022-05-23 в 16.40.54.png"
 
-
 const Form = css`
   width: 100%;
   height: 100vh;
