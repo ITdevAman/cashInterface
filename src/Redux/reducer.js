@@ -8,7 +8,7 @@ import {
     GET_PERSON,
     MIN_CART,
     REMOVE_CART,
-    REMOVE_PERSON
+    REMOVE_PERSON,
 } from "./actions";
 import thunk from "redux-thunk";
 const initialState = {

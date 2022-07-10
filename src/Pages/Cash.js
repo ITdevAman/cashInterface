@@ -625,7 +625,6 @@ const Cash = () => {
       return document.location.reload()
     }
     //////
-
     return (
         <div>
             <div className={Alert}>

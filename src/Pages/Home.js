@@ -6,6 +6,9 @@ import {useDispatch, useSelector} from "react-redux";
 import {ADD_CART} from "../Redux/actions";
 import Modal from "react-modal";
 import Icon from "../Assets/Icon.png"
+import {returnFocus} from "react-modal/lib/helpers/focusManager";
+import {faArrowLeft, faArrowRight, faPlay} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 
 const cashBlock = css`
@@ -661,15 +664,45 @@ const AnaloguePageBtnX = css`
   font-size: 24px;
   font-weight: 250;
 `
+const cashMenuBtnNextPrevious = css`
+        width: 100%;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 40px;
+  margin-left: -15px;
+    .cashMenuBtnNextPrevious_btn{
+            opacity: .5;
+        } 
+    & button {
+            border: none ;
+            background: transparent;
+            font-size: 18px ;
+            display: flex;
+            align-items: center;
+      margin: 0 30px;
+        & span {
+                font-size: 15px;
+                font-weight: 300;
+                margin: 0 5px;
+            }
+        }
+    `
+
 
 const Home = () => {
+    const {token, is_active , tokenRefresh} = useSelector(store => store)
+
+
     const [card, setCard] = useState([])
     const [filterCategory, setFilterCategory] = useState([])
     const [analogue , setAnalogue] = useState({analogue : [] , id : 0})
     const [category, setCategory] = useState([])
     const dispatch = useDispatch()
-    const {token, is_active , tokenRefresh} = useSelector(store => store)
     const [search, setSearch] = useState([card, filterCategory])
+    const [linkNext , setLinkNext] = useState(`https://s225912.hostiman.com/api/product/list/?page=1`)
+    const [linkPrevious , setLinkPrevious] = useState(`https://s225912.hostiman.com/api/product/list/?page=1`)
     const TokenRefresh = `${token.token.refresh}`
     let subtitle;
     const [modalIsOpen, setIsOpen] = useState(false);
@@ -683,16 +716,40 @@ const Home = () => {
         setIsOpen(false);
     }
     useEffect(() => {
-        axios.get(`https://s225912.hostiman.com/api/product/list/`, {
+        axios.get(`https://s225912.hostiman.com/api/product/list/?page=1`, {
             headers: {
                 "Authorization": `Bearer ${tokenRefresh}`
             }
         })
             .then(({data}) => {
                 setCard(data)
-                setSearch(data)
+                setSearch(data.results)
             })
     }, [tokenRefresh])
+    const Next = () => {
+        axios.get(linkNext, {
+            headers: {
+                "Authorization": `Bearer ${tokenRefresh}`
+            }
+        })
+            .then(({data}) => {
+                setLinkNext(card.next)
+                setCard(data)
+                setSearch(data.results)
+            })
+    }
+    const Previous =  () => {
+        axios.get(linkPrevious, {
+            headers: {
+                "Authorization": `Bearer ${tokenRefresh}`
+            }
+        })
+            .then(({data}) => {
+                setCard(data)
+                setSearch(data.results)
+                setLinkPrevious(card.previous)
+            })
+    }
     useEffect(() => {
         axios.get(`https://s225912.hostiman.com/api/category/list/`, {
             headers: {
@@ -700,8 +757,8 @@ const Home = () => {
             }
         })
             .then(({data}) => {
-                setCategory(data)
-                setFilterCategory(data)
+                setCategory(data.results)
+                setFilterCategory(data.results)
             })
     }, [tokenRefresh])
     useEffect(() => {
@@ -734,16 +791,16 @@ const Home = () => {
           .catch(err=>console.log(err))
     }
     const searchCard = (el) => {
-        let value = el.target.value.toLowerCase()
-        axios.get(`https://s225912.hostiman.com/api/product/search/?search=${value}`, {
-            headers: {
+        let value = el.target.value
+        axios.get(`https://s225912.hostiman.com/api/product/search/?search=${value}`, {headers: {
                 "Authorization": `Bearer ${tokenRefresh}`
             }
         })
             .then((res) => {
-                setSearch(res.data)
+                setSearch(res.data.results)
+                console.log(res.data.results)
             })
-        return setSearch(card)
+        return setSearch(card.results)
     }
     const BarCode = (el) => {
         let value = el.target.value.toLowerCase()
@@ -755,22 +812,26 @@ const Home = () => {
                     }
                 })
                     .then((res) => {
-                        dispatch({type: ADD_CART, payload: res.data[0]})
+                        dispatch({type: ADD_CART, payload: res.data.results[0]})
                         el.target.value = "";
-                        setSearch(res.data)
+                        setSearch(res.data.results)
                     })
             }
         }
-        return setSearch(card)
+        return setSearch(card.results)
     }
     //
-    const filter = ({name}) => {
-        let valueFilter = name.toLowerCase()
-        let result = []
-        result = card.filter((el) => {
-            return el.category.toLowerCase().search(valueFilter) !== -1;
+
+    const filter = ({id}) => {
+        axios.get(`https://s225912.hostiman.com/api/category/${id}/search/product/` ,{
+            headers: {
+                "Authorization": `Bearer ${tokenRefresh}`
+            }
         })
-        setSearch(result)
+            .then((res)=>{
+                setSearch(res.data.results)
+                setFilterCategory(res.data.results)
+            })
     }
     const Analogue = (ID) => {
         analogue.id > 0 ? setAnalogue([]) : axios.get(`https://s225912.hostiman.com/api/product/list/analogue/${ID}`, {
@@ -852,7 +913,7 @@ const Home = () => {
                     <input type="search" onChange={el => searchCard(el)} placeholder="Поиск продукта"/>
                 </div>
                 <div className={category.length > 5 ? "cashFilter2" : "cashFilter"}>
-                    <button onClick={() => filter({name: ""})} className="cashFilter_cart">
+                    <button onClick={() => filter({id: "all"})} className="cashFilter_cart">
                         <img src={coffee} alt=""/>
                         <h1>
                             All
@@ -860,7 +921,7 @@ const Home = () => {
                     </button>
                     {
                         category.map((item) => {
-                            return <button id={item.id} onClick={() => filter({name: item.name})}
+                            return <button onClick={() => filter({id : item.id})}
                                            className="cashFilter_cart">
                                 <img src={item.image} alt=""/>
                                 <h1>
@@ -959,6 +1020,11 @@ const Home = () => {
                         </div>
                     </div>
                 </div>
+                {is_active?<div className={cashMenuBtnNextPrevious}>
+                    <button className={card.previous===null ? "cashMenuBtnNextPrevious_btn" : ""} onClick={()=> card.previous ===null ? "" : Previous()}><span><FontAwesomeIcon icon={faArrowLeft}/></span>Previous</button>
+                    <button className={card.next===null ? "cashMenuBtnNextPrevious_btn" : ""} onClick={()=> card.next===null ? "" : Next()}>Next <span><FontAwesomeIcon icon={faArrowRight}/></span></button>
+                </div>:<></>}
+
             </div>
         </section>
     );

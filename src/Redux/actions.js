@@ -11,3 +11,6 @@ export const CASH_SESSION_START = "CASH_SESSION_START";
 export const GET_CHECK = "GET_CHECK";
 export const BOX = "BOX";
 export const GET_CHECK_PRODUCT = "GET_CHECK_PRODUCT";
+
+
+
