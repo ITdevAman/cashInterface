@@ -913,7 +913,7 @@ const Home = () => {
                     <input type="search" onChange={el => searchCard(el)} placeholder="Поиск продукта"/>
                 </div>
                 <div className={category.length > 5 ? "cashFilter2" : "cashFilter"}>
-                    <button onClick={() => filter({id: "all"})} className="cashFilter_cart">
+                    <button onClick={() => filter({id: 0})} className="cashFilter_cart">
                         <img src={coffee} alt=""/>
                         <h1>
                             All
