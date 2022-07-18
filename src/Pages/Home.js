@@ -6,8 +6,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {ADD_CART} from "../Redux/actions";
 import Modal from "react-modal";
 import Icon from "../Assets/Icon.png"
-import {returnFocus} from "react-modal/lib/helpers/focusManager";
-import {faArrowLeft, faArrowRight, faPlay} from "@fortawesome/free-solid-svg-icons";
+import {faArrowLeft, faArrowRight} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 
@@ -930,7 +929,6 @@ const Home = () => {
                             </button>
                         })
                     }
-
                 </div>
                 <div className="cashMenu">
                     <input type="search" onChange={el => BarCode(el)} placeholder="Код"/>
